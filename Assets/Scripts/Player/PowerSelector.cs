@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class AngleSelector : MonoBehaviour, ISelector
+public class PowerSelector : MonoBehaviour, ISelector
 {
     public PlayerController player;
-    public float maxAngle;
-    public float minAngle;
+    public Slider powerSlider;
+    public float maxPower;
+    public float minPower;
     public float speed;
 
     private bool isIncreasing = true;
@@ -24,50 +26,52 @@ public class AngleSelector : MonoBehaviour, ISelector
     {
         if (!indicatorRunning) { return; }
 
-        float angleCheck;
+        float currentPower = powerSlider.value;
+        float powerCheck;
         bool changeDirections = false;
-        float angleChange;
+        float powerChange;
 
         if (isIncreasing)
         {
-            angleCheck = maxAngle - transform.eulerAngles.z;
+            powerCheck = maxPower - currentPower;
         }
         else
         {
-            angleCheck = transform.eulerAngles.z - minAngle;
+            powerCheck = currentPower - minPower;
         }
 
-        if (angleCheck < speed)
+        if (powerCheck < speed)
         {
-            angleChange = angleCheck;
+            powerChange = powerCheck;
             changeDirections = true;
         }
         else
         {
-            angleChange = speed;
+            powerChange = speed;
         }
 
-        transform.RotateAround(player.transform.position, new Vector3(0, 0, 1), isIncreasing ? angleChange : -angleChange);
+        powerSlider.value += isIncreasing ? powerChange : -powerChange;
 
         if (changeDirections) { isIncreasing = !isIncreasing; }
     }
 
-    [ContextMenu("Start Angle Indicator")]
+    [ContextMenu("Start Power Indicator")]
     public void StartIndicator()
     {
-        transform.RotateAround(player.transform.position, new Vector3(0, 0, 1), minAngle);
+        powerSlider.maxValue = maxPower;
+        powerSlider.value = minPower;
         indicatorRunning = true;
         this.gameObject.SetActive(true);
     }
 
-    [ContextMenu("Stop Angle Indicator")]
+    [ContextMenu("Stop Power Indicator")]
     public void StopIndicator()
     {
-        player.SetAngle(transform.eulerAngles.z);
+        player.SetPower(powerSlider.value);
         indicatorRunning = false;
     }
 
-    [ContextMenu("Hide Angle Indicator")]
+    [ContextMenu("Hide Power Indicator")]
     public void HideIndicator()
     {
         this.gameObject.SetActive(false);

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IPlayer
 {
+    private float angle = 0;
+    private float power = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,13 +18,14 @@ public class PlayerController : MonoBehaviour, IPlayer
     {
 
     }
-    public void SetAngle(float angle)
+
+    public void SetAngle(float angleValue)
     {
-        //throw new System.NotImplementedException();
+        angle = angleValue;
     }
 
-    public void SetPower(float power)
+    public void SetPower(float powerValue)
     {
-        //throw new System.NotImplementedException();
+        power = powerValue;
     }
 }
