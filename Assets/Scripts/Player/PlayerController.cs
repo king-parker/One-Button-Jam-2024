@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     public AngleSelector angleSelector;
     public PowerSelector powerSelector;
     public PlayerControls controls;
+    public Rigidbody2D rb;
 
     private float angle = 0;
     private float power = 0;
@@ -73,11 +74,13 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void SetAngle(float angleValue)
     {
+        print("Player launch angle set: " + angleValue);
         angle = angleValue;
     }
 
     public void SetPower(float powerValue)
     {
+        print("Player launch power set: " + powerValue);
         power = powerValue;
     }
 
@@ -103,7 +106,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void SetState(PlayerState nextState)
     {
-        //print("Switching state\nCurrent state: " + state + "\nNext state: " +  nextState);
+        print("Switching state\nFrom " + state + " to " + nextState);
         switch (nextState)
         {
             case PlayerState.Disabled:
@@ -119,6 +122,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 angleSelector.HideIndicator();
                 powerSelector.StopIndicator();
                 powerSelector.HideIndicator();
+                rb.AddForce(new Vector2(power * Mathf.Cos(Mathf.Deg2Rad * angle), power * Mathf.Sin(Mathf.Deg2Rad * angle)));
                 break;
         }
 
@@ -126,4 +130,6 @@ public class PlayerController : MonoBehaviour, IPlayer
         // TODO: Get rid of when jumping is implemented
         if (state == PlayerState.Jumping) { NextState(); }
     }
+
+    public PlayerState GetState() { return state; }
 }

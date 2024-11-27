@@ -21,8 +21,8 @@ public class AngleSelector : MonoBehaviour, ISelector
         initialX = transform.position.x;
         initialY = transform.position.y;
 
-        StopIndicator();
-        HideIndicator();
+        //StopIndicator();
+        if (player.GetState() != PlayerController.PlayerState.AngleSelect)  { HideIndicator(); }
     }
 
     // Update is called once per frame
@@ -61,7 +61,7 @@ public class AngleSelector : MonoBehaviour, ISelector
     [ContextMenu("Start Angle Indicator")]
     public void StartIndicator()
     {
-        transform.position = new Vector3(initialX, initialY, 0);
+        transform.position = new Vector3(initialX + player.transform.position.x, initialY + player.transform.position.y, 0);
         transform.rotation = Quaternion.AngleAxis(minAngle, Vector3.forward);
         indicatorRunning = true;
         this.gameObject.SetActive(true);

@@ -359,7 +359,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -940,6 +940,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angleSelector: {fileID: 204960952}
   powerSelector: {fileID: 1431641548}
+  rb: {fileID: 1409269661}
 --- !u!1 &1431641545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,9 +1046,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1409269664}
   powerSlider: {fileID: 1431641547}
-  maxPower: 100
+  maxPower: 1000
   minPower: 10
-  speed: 0.1
+  speed: 1
 --- !u!114 &1431641549
 MonoBehaviour:
   m_ObjectHideFlags: 0
