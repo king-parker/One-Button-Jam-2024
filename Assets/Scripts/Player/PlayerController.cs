@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     private float angle = 0;
     private float power = 0;
     private PlayerState state;
+    private bool movedLastUpdate = false;
 
     public enum PlayerState
     {
@@ -39,7 +40,6 @@ public class PlayerController : MonoBehaviour, IPlayer
         controls.Disable();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         state = PlayerState.Disabled;
@@ -48,10 +48,27 @@ public class PlayerController : MonoBehaviour, IPlayer
         NextState();
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
+        switch (state)
+        {
+            case PlayerState.Disabled:
+                return;
+            case PlayerState.Jumping:
+                if (rb.velocity.magnitude > 0)
+                {
+                    movedLastUpdate = true;
+                }
+                else if (rb.velocity.magnitude == 0 && !movedLastUpdate)
+                {
+                    NextState();
+                }
+                else
+                {
+                    movedLastUpdate = false;
+                }
+                break;
+        }
     }
 
     public void ButtonPress()
@@ -74,13 +91,13 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void SetAngle(float angleValue)
     {
-        print("Player launch angle set: " + angleValue);
+        //print("Player launch angle set: " + angleValue);
         angle = angleValue;
     }
 
     public void SetPower(float powerValue)
     {
-        print("Player launch power set: " + powerValue);
+        //print("Player launch power set: " + powerValue);
         power = powerValue;
     }
 
@@ -106,7 +123,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void SetState(PlayerState nextState)
     {
-        print("Switching state\nFrom " + state + " to " + nextState);
+        //print("Switching state\nFrom " + state + " to " + nextState);
         switch (nextState)
         {
             case PlayerState.Disabled:
@@ -123,12 +140,13 @@ public class PlayerController : MonoBehaviour, IPlayer
                 powerSelector.StopIndicator();
                 powerSelector.HideIndicator();
                 rb.AddForce(new Vector2(power * Mathf.Cos(Mathf.Deg2Rad * angle), power * Mathf.Sin(Mathf.Deg2Rad * angle)));
+                movedLastUpdate = true;
                 break;
         }
 
         state = nextState;
         // TODO: Get rid of when jumping is implemented
-        if (state == PlayerState.Jumping) { NextState(); }
+        //if (state == PlayerState.Jumping) { NextState(); }
     }
 
     public PlayerState GetState() { return state; }

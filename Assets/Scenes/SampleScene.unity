@@ -383,8 +383,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.6, y: 6.0999994, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -417,7 +417,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 854933733}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: d649f9c058bb05e40868c0207be3dfa7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -514,8 +514,8 @@ Transform:
   m_GameObject: {fileID: 854933733}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6287, y: -1.77, z: 0}
-  m_LocalScale: {x: 25.203955, y: 1, z: 1}
+  m_LocalPosition: {x: 66.52, y: -1.02, z: 0}
+  m_LocalScale: {x: 145.15, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -845,7 +845,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -918,7 +918,7 @@ Transform:
   m_GameObject: {fileID: 1409269659}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.52, y: -0.75, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 6.5, y: 6.5, z: 6.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1046,9 +1046,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1409269664}
   powerSlider: {fileID: 1431641547}
-  maxPower: 1000
-  minPower: 10
-  speed: 1
+  maxPower: 2500
+  minPower: 100
+  speed: 5
 --- !u!114 &1431641549
 MonoBehaviour:
   m_ObjectHideFlags: 0

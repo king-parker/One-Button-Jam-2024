@@ -68,7 +68,7 @@ public class PowerSelector : MonoBehaviour, ISelector
     [ContextMenu("Start Power Indicator")]
     public void StartIndicator()
     {
-        print("Starting power indicator");
+        //print("Starting power indicator");
         powerSlider.maxValue = maxPower;
         powerSlider.value = minPower;
         indicatorRunning = true;
@@ -78,7 +78,7 @@ public class PowerSelector : MonoBehaviour, ISelector
     [ContextMenu("Stop Power Indicator")]
     public void StopIndicator()
     {
-        print("Stopping power indicator");
+        //print("Stopping power indicator");
         player.SetPower(powerSlider.value);
         indicatorRunning = false;
     }
@@ -86,7 +86,7 @@ public class PowerSelector : MonoBehaviour, ISelector
     [ContextMenu("Hide Power Indicator")]
     public void HideIndicator()
     {
-        print("Hiding power indicator");
+        //print("Hiding power indicator");
         this.gameObject.SetActive(false);
     }
 }
