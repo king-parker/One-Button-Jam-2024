@@ -11,10 +11,16 @@ public class AngleSelector : MonoBehaviour, ISelector
 
     private bool isIncreasing = true;
     private bool indicatorRunning = false;
+    private float initialX;
+    private float initialY;
 
     // Start is called before the first frame update
     void Start()
     {
+        transform.RotateAround(player.transform.position, new Vector3(0, 0, 1), minAngle);
+        initialX = transform.position.x;
+        initialY = transform.position.y;
+
         StopIndicator();
         HideIndicator();
     }
@@ -55,7 +61,8 @@ public class AngleSelector : MonoBehaviour, ISelector
     [ContextMenu("Start Angle Indicator")]
     public void StartIndicator()
     {
-        transform.RotateAround(player.transform.position, new Vector3(0, 0, 1), minAngle);
+        transform.position = new Vector3(initialX, initialY, 0);
+        transform.rotation = Quaternion.AngleAxis(minAngle, Vector3.forward);
         indicatorRunning = true;
         this.gameObject.SetActive(true);
     }

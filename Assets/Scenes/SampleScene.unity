@@ -609,7 +609,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -938,6 +938,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b13fa7bfa3db444c98088d8e935b4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  angleSelector: {fileID: 204960952}
+  powerSelector: {fileID: 1431641548}
 --- !u!1 &1431641545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,7 +1044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1409269664}
-  powerSlider: {fileID: 0}
+  powerSlider: {fileID: 1431641547}
   maxPower: 100
   minPower: 10
   speed: 0.1
