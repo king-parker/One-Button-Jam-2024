@@ -150,4 +150,10 @@ public class PlayerController : MonoBehaviour, IPlayer
     }
 
     public PlayerState GetState() { return state; }
+
+    public void Death()
+    {
+        rb.velocity *= new Vector2(0, rb.velocity.y > 0 ? 0 : 1);
+        SetState(PlayerController.PlayerState.Disabled);
+    }
 }
