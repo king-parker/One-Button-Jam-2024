@@ -33,6 +33,7 @@ public class AngleSelector : MonoBehaviour, ISelector
         float angleCheck;
         bool changeDirections = false;
         float angleChange;
+        float delta = speed * Time.deltaTime;
 
         if (isIncreasing)
         {
@@ -43,14 +44,14 @@ public class AngleSelector : MonoBehaviour, ISelector
             angleCheck = transform.eulerAngles.z - minAngle;
         }
 
-        if (angleCheck < speed)
+        if (angleCheck < delta)
         {
             angleChange = angleCheck;
             changeDirections = true;
         }
         else
         {
-            angleChange = speed;
+            angleChange = delta;
         }
 
         transform.RotateAround(player.transform.position, new Vector3(0, 0, 1), isIncreasing ? angleChange : -angleChange);

@@ -413,7 +413,7 @@ MonoBehaviour:
   player: {fileID: 1409269664}
   maxAngle: 60
   minAngle: 5
-  speed: 0.325
+  speed: 50
 --- !u!1001 &212088466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2848,7 +2848,7 @@ MonoBehaviour:
   powerSlider: {fileID: 1431641547}
   maxPower: 1500
   minPower: 100
-  speed: 10
+  speed: 1000
 --- !u!114 &1431641549
 MonoBehaviour:
   m_ObjectHideFlags: 0
