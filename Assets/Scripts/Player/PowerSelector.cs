@@ -40,6 +40,7 @@ public class PowerSelector : MonoBehaviour, ISelector
         float powerCheck;
         bool changeDirections = false;
         float powerChange;
+        float delta = speed * Time.deltaTime;
 
         if (isIncreasing)
         {
@@ -50,14 +51,14 @@ public class PowerSelector : MonoBehaviour, ISelector
             powerCheck = currentPower - minPower;
         }
 
-        if (powerCheck < speed)
+        if (powerCheck < delta)
         {
             powerChange = powerCheck;
             changeDirections = true;
         }
         else
         {
-            powerChange = speed;
+            powerChange = delta;
         }
 
         powerSlider.value += isIncreasing ? powerChange : -powerChange;
