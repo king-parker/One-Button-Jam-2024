@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
         controls.Disable();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         if (!showTitleScreen)
@@ -65,12 +64,6 @@ public class GameManager : MonoBehaviour
     public void StartWithGameplay()
     {
         StartGame();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void OnUIAccept()

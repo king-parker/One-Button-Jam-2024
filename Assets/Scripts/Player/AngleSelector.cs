@@ -13,9 +13,7 @@ public class AngleSelector : MonoBehaviour, ISelector
     private bool indicatorRunning = false;
     private float offsetX;
     private float offsetY;
-    //private float prevPlayerY;
 
-    // Start is called before the first frame update
     void Start()
     {
         transform.RotateAround(player.transform.position, new Vector3(0, 0, 1), minAngle);
@@ -25,7 +23,6 @@ public class AngleSelector : MonoBehaviour, ISelector
         if (player.GetState() != PlayerController.PlayerState.AngleSelect)  { HideIndicator(); }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!indicatorRunning) { return; }

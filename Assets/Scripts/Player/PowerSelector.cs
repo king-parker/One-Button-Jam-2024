@@ -14,13 +14,6 @@ public class PowerSelector : MonoBehaviour, ISelector
     private bool isIncreasing = true;
     private bool indicatorRunning = false;
 
-    //void Awake()
-    //{
-    //    StopIndicator();
-    //    HideIndicator();
-    //}
-
-    // Start is called before the first frame update
     void Start()
     {
         powerSlider.maxValue = maxPower;
@@ -29,7 +22,6 @@ public class PowerSelector : MonoBehaviour, ISelector
         if (player.GetState() != PlayerController.PlayerState.PowerSelect) { HideIndicator(); }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!indicatorRunning) { return; }
@@ -69,7 +61,6 @@ public class PowerSelector : MonoBehaviour, ISelector
     [ContextMenu("Start Power Indicator")]
     public void StartIndicator()
     {
-        //print("Starting power indicator");
         powerSlider.maxValue = maxPower;
         powerSlider.value = minPower;
         indicatorRunning = true;
@@ -79,7 +70,6 @@ public class PowerSelector : MonoBehaviour, ISelector
     [ContextMenu("Stop Power Indicator")]
     public void StopIndicator()
     {
-        //print("Stopping power indicator");
         player.SetPower(powerSlider.value);
         indicatorRunning = false;
     }
@@ -87,7 +77,6 @@ public class PowerSelector : MonoBehaviour, ISelector
     [ContextMenu("Hide Power Indicator")]
     public void HideIndicator()
     {
-        //print("Hiding power indicator");
         this.gameObject.SetActive(false);
     }
 }

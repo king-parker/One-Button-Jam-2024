@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void ButtonPress()
     {
-        //print("Button Pressed\nState: " + state);
         if (state == PlayerState.AngleSelect)
         {
             NextState();
@@ -83,7 +82,6 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void ButtonRelease()
     {
-        //print("Button Released\nState: " + state);
         if (state == PlayerState.PowerSelect)
         {
             NextState();
@@ -92,19 +90,16 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void SetAngle(float angleValue)
     {
-        //print("Player launch angle set: " + angleValue);
         angle = angleValue;
     }
 
     public void SetPower(float powerValue)
     {
-        //print("Player launch power set: " + powerValue);
         power = powerValue;
     }
 
     public void NextState()
     {
-        //print("Auto next state transition");
         switch (state)
         {
             case PlayerState.Disabled:
@@ -124,7 +119,6 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public void SetState(PlayerState nextState)
     {
-        //print("Switching state\nFrom " + state + " to " + nextState);
         switch (nextState)
         {
             case PlayerState.Disabled:
@@ -153,7 +147,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     public void Death()
     {
         rb.velocity *= new Vector2(0, rb.velocity.y > 0 ? 0 : 1);
-        SetState(PlayerController.PlayerState.Disabled);
+        SetState(PlayerState.Disabled);
         gameManager.GameOver();
     }
 }
