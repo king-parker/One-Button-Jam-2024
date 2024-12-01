@@ -25,7 +25,10 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     void Awake()
     {
-        controls = new PlayerControls();
+        if (controls == null)
+        {
+            controls = new PlayerControls();
+        }
         controls.Player.Button.started += _ => ButtonPress();
         controls.Player.Button.canceled += _ => ButtonRelease();
     }
@@ -44,8 +47,8 @@ public class PlayerController : MonoBehaviour, IPlayer
     {
         state = PlayerState.Disabled;
 
-        // TODO: Remove when a start menu is implemented
-        NextState();
+        //// TODO: Remove when a start menu is implemented
+        //NextState();
     }
 
     void FixedUpdate()
