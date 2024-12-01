@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     public PowerSelector powerSelector;
     public PlayerControls controls;
     public Rigidbody2D rb;
+    public GameManager gameManager;
 
     private float angle = 0;
     private float power = 0;
@@ -46,9 +47,6 @@ public class PlayerController : MonoBehaviour, IPlayer
     void Start()
     {
         state = PlayerState.Disabled;
-
-        //// TODO: Remove when a start menu is implemented
-        //NextState();
     }
 
     void FixedUpdate()
@@ -148,8 +146,6 @@ public class PlayerController : MonoBehaviour, IPlayer
         }
 
         state = nextState;
-        // TODO: Get rid of when jumping is implemented
-        //if (state == PlayerState.Jumping) { NextState(); }
     }
 
     public PlayerState GetState() { return state; }
@@ -158,5 +154,6 @@ public class PlayerController : MonoBehaviour, IPlayer
     {
         rb.velocity *= new Vector2(0, rb.velocity.y > 0 ? 0 : 1);
         SetState(PlayerController.PlayerState.Disabled);
+        gameManager.GameOver();
     }
 }

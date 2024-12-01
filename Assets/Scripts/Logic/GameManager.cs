@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
                 StartGame();
                 break;
             case GameState.GameOver:
+                RestartGame();
                 break;
             default:
                 break;
@@ -93,6 +94,13 @@ public class GameManager : MonoBehaviour
         gameOverScreen.SetActive(false);
         gameState = GameState.Gameplay;
         player.SetState(PlayerController.PlayerState.AngleSelect);
+    }
+
+    public void GameOver()
+    {
+        gameOverScreen.SetActive(true);
+        gameState = GameState.GameOver;
+        player.SetState(PlayerController.PlayerState.Disabled);
     }
 
     public void RestartGame()
