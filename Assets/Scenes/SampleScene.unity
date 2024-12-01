@@ -2168,11 +2168,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1589129479710624500, guid: 12afc7b3b7c05ff4ea724dbe44ba083c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 138.13495
+      value: 139
       objectReference: {fileID: 0}
     - target: {fileID: 1589129479710624500, guid: 12afc7b3b7c05ff4ea724dbe44ba083c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.24
       objectReference: {fileID: 0}
     - target: {fileID: 1589129479710624500, guid: 12afc7b3b7c05ff4ea724dbe44ba083c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3000,6 +3000,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5495951156609236057, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
   m_PrefabInstance: {fileID: 421876199}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1654396583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1654396585}
+  - component: {fileID: 1654396584}
+  m_Layer: 0
+  m_Name: DebugManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1654396584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654396583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ff0596af5fd52408dcca404e888889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1654396585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654396583}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.8366275, y: 1.4835163, z: -9.941431}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1656344299 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5289971738397011350, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
@@ -3551,3 +3595,4 @@ SceneRoots:
   - {fileID: 1409269663}
   - {fileID: 976791283}
   - {fileID: 1719136770}
+  - {fileID: 1654396585}
