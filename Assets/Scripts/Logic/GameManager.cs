@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    public static bool firstLoad = true;
+    public MusicManager musicManager;
+    public SceneLoadingManager sceneLoadingManager;
+    public UIControls uiControls;
 
-    public PlayerController player;
-    public GameObject chunkContainer;
-    public GameObject titleScreen;
-    public GameObject gameOverScreen;
-    public UIControls controls;
+    public const string TITLE_SCENE = "Title Scene";
+    public const string GAME_SCENE = "Game Scene";
+    public const string GAME_OVER_SCENE = "Game Over Scene";
+
+    public static event Action OnBoot;
+    public static event Action OnGameStarted;
+    public static event Action OnGameOver;
+    public static event Action OnRestart;
+
+    private static bool PlayerActiveOnStart = false;
 
     private GameState gameState;
-    private bool showTitleScreen;
+    private GameObject gameOverScreen;
 
     public enum GameState
     {
@@ -26,47 +32,60 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (firstLoad)
-        {
-            showTitleScreen = true;
-            firstLoad = false;
-            gameState = GameState.TitleScreen;
-        }
-        else
-        {
-            showTitleScreen = false;
-        }
-
-        controls = new UIControls();
-        controls.UI.UIAccept.canceled += _ => OnUIAccept();
+        uiControls = new UIControls();
+        uiControls.UI.UIAccept.canceled += _ => OnUIAccept();
     }
 
     void OnEnable()
     {
-        controls.Enable();
+        uiControls.Enable();
     }
 
     void OnDisable()
     {
-        controls.Disable();
+        uiControls.Disable();
     }
 
     void Start()
     {
-        if (!showTitleScreen)
-        {
-            // Delay call to start game so player controls work
-            titleScreen.SetActive(false);
-            Invoke(nameof(StartWithGameplay), 0.25f);
-        }
+        gameState = GameState.TitleScreen;
+        OnBoot?.Invoke();
+        Invoke(nameof(LateStart), .125f);
     }
 
-    public void StartWithGameplay()
+    // The scene object is not available right after invoking OnBoot. This delayed start function attempts to avoid the race condition.
+    public void LateStart()
     {
-        StartGame();
+        gameOverScreen = sceneLoadingManager.GetGameOverScene().GetRootGameObjects()[0].transform.GetChild(0).gameObject;
     }
 
-    public void OnUIAccept()
+    public static bool GetPlayerActiveOnStart()
+    {
+        return PlayerActiveOnStart;
+    }
+
+    public void StartGame()
+    {
+        gameState = GameState.Gameplay;
+        OnGameStarted?.Invoke();
+        PlayerActiveOnStart = true;
+    }
+
+    public void GameOver()
+    {
+        gameState = GameState.GameOver;
+        OnGameOver?.Invoke();
+        gameOverScreen?.SetActive(true);
+    }
+
+    public void Restart()
+    {
+        gameState = GameState.Gameplay;
+        gameOverScreen.SetActive(false);
+        OnRestart?.Invoke();
+    }
+
+    private void OnUIAccept()
     {
         switch (gameState)
         {
@@ -74,30 +93,10 @@ public class GameManager : MonoBehaviour
                 StartGame();
                 break;
             case GameState.GameOver:
-                RestartGame();
+                Restart();
                 break;
             default:
                 break;
         }
-    }
-
-    public void StartGame()
-    {
-        titleScreen.SetActive(false);
-        gameOverScreen.SetActive(false);
-        gameState = GameState.Gameplay;
-        player.SetState(PlayerController.PlayerState.AngleSelect);
-    }
-
-    public void GameOver()
-    {
-        gameOverScreen.SetActive(true);
-        gameState = GameState.GameOver;
-        player.SetState(PlayerController.PlayerState.Disabled);
-    }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour, IPlayer
     public PowerSelector powerSelector;
     public PlayerControls controls;
     public Rigidbody2D rb;
-    public GameManager gameManager;
 
     private float angle = 0;
     private float power = 0;
@@ -37,16 +36,28 @@ public class PlayerController : MonoBehaviour, IPlayer
     void OnEnable()
     {
         controls.Enable();
+        GameManager.OnGameStarted += ReadyPlayer;
+        GameManager.OnGameOver += Death;
     }
 
     void OnDisable()
     {
         controls.Disable();
+        GameManager.OnGameStarted -= ReadyPlayer;
+        GameManager.OnGameOver -= Death;
     }
 
     void Start()
     {
-        state = PlayerState.Disabled;
+        if (GameManager.GetPlayerActiveOnStart())
+        {
+            state = PlayerState.AngleSelect;
+            angleSelector.StartIndicator();
+        }
+        else
+        {
+            state = PlayerState.Disabled;
+        }
     }
 
     void FixedUpdate()
@@ -148,6 +159,13 @@ public class PlayerController : MonoBehaviour, IPlayer
     {
         rb.velocity *= new Vector2(0, rb.velocity.y > 0 ? 0 : 1);
         SetState(PlayerState.Disabled);
-        gameManager.GameOver();
+    }
+
+    public void ReadyPlayer()
+    {
+        if (state == PlayerState.Disabled)
+        {
+            NextState();
+        }
     }
 }
