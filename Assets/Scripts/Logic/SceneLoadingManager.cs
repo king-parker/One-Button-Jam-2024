@@ -21,9 +21,9 @@ public class SceneLoadingManager : MonoBehaviour
 
     public void GameBoot()
     {
-        SceneManager.LoadScene(GameManager.GAME_SCENE, LoadSceneMode.Additive);
-        SceneManager.LoadScene(GameManager.TITLE_SCENE, LoadSceneMode.Additive);
-        SceneManager.LoadScene(GameManager.GAME_OVER_SCENE, LoadSceneMode.Additive);
+        LoadIfNotLoaded(GameManager.GAME_SCENE);
+        LoadIfNotLoaded(GameManager.TITLE_SCENE);
+        LoadIfNotLoaded(GameManager.GAME_OVER_SCENE);
     }
 
     public void UnloadTitle()
@@ -44,5 +44,14 @@ public class SceneLoadingManager : MonoBehaviour
     {
         SceneManager.UnloadSceneAsync(GameManager.GAME_SCENE);
         SceneManager.LoadScene(GameManager.GAME_SCENE, LoadSceneMode.Additive);
+    }
+
+    private void LoadIfNotLoaded(string name)
+    {
+        var scene = SceneManager.GetSceneByName(name);
+        if (!scene.isLoaded)
+        {
+            SceneManager.LoadScene(name, LoadSceneMode.Additive);
+        }
     }
 }

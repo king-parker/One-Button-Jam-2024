@@ -1864,7 +1864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &858191978
 Transform:
   m_ObjectHideFlags: 0
@@ -3547,7 +3547,6 @@ MonoBehaviour:
   angleSelector: {fileID: 1674462806}
   powerSelector: {fileID: 732575489}
   rb: {fileID: 1731834491}
-  gameManager: {fileID: 0}
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3781,13 +3780,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1830498447}
+  - component: {fileID: 1830498448}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1830498447
 Transform:
   m_ObjectHideFlags: 0
@@ -3815,6 +3815,25 @@ Transform:
   - {fileID: 1237272888}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1830498448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830498446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f010aeeb6d5f6464c9e9f3e0908d85a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseChunk: {fileID: 6218714669655649827, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
+  singleSpikeChunk: {fileID: 1832244546576180856, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
+  spikeChunk: {fileID: 3573682836918048758, guid: 5e5bfc68184f58343a613ec58f075a88, type: 3}
+  chunkWidth: 4
+  spawnDistance: 40
+  chunkFloorY: -4
+  player: {fileID: 1731834492}
 --- !u!1001 &1856478940
 PrefabInstance:
   m_ObjectHideFlags: 0

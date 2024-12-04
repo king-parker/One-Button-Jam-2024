@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23228e47273429145bf2193a3623f1d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freeDistance: -16
+  freeDistance: 16
   player: {fileID: 0}
 --- !u!1001 &515385891995485685
 PrefabInstance:

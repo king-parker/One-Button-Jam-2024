@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChunkLogic : MonoBehaviour
 {
-    public float freeDistance = -16;
+    public float freeDistance = 16;
     public PlayerController player;
 
     void Start()
@@ -14,9 +14,10 @@ public class ChunkLogic : MonoBehaviour
 
     void Update()
     {
-        float distance = transform.position.x - player.transform.position.x;
-        if (distance <= freeDistance)
+        float distance = player.transform.position.x - transform.position.x;
+        if (distance >= freeDistance)
         {
+            print("Name: " + this.name + "\nDistance: " + distance + "\nPosition: " + transform.position);
             Destroy(gameObject);
         }
     }
