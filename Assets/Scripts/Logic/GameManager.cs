@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnGameOver;
     public static event Action OnRestart;
 
-    private static bool PlayerActiveOnStart = false;
+    private static bool isFirstGameStart = true;
 
     private GameState gameState;
     private GameObject gameOverScreen;
@@ -59,16 +59,16 @@ public class GameManager : MonoBehaviour
         gameOverScreen = sceneLoadingManager.GetGameOverScene().GetRootGameObjects()[0].transform.GetChild(0).gameObject;
     }
 
-    public static bool GetPlayerActiveOnStart()
+    public static bool IsFirstGameStart()
     {
-        return PlayerActiveOnStart;
+        return isFirstGameStart;
     }
 
     public void StartGame()
     {
         gameState = GameState.Gameplay;
         OnGameStarted?.Invoke();
-        PlayerActiveOnStart = true;
+        isFirstGameStart = false;
     }
 
     public void GameOver()

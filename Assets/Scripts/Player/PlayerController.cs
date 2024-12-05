@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class PlayerController : MonoBehaviour, IPlayer
     public PowerSelector powerSelector;
     public PlayerControls controls;
     public Rigidbody2D rb;
+
+    public static event Action OnJumpCompleted;
 
     private float angle = 0;
     private float power = 0;
@@ -49,14 +52,14 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     void Start()
     {
-        if (GameManager.GetPlayerActiveOnStart())
+        if (GameManager.IsFirstGameStart())
         {
-            state = PlayerState.AngleSelect;
-            angleSelector.StartIndicator();
+            state = PlayerState.Disabled;
         }
         else
         {
-            state = PlayerState.Disabled;
+            state = PlayerState.AngleSelect;
+            angleSelector.StartIndicator();
         }
     }
 
@@ -73,6 +76,8 @@ public class PlayerController : MonoBehaviour, IPlayer
                 }
                 else if (rb.velocity.magnitude == 0 && !movedLastUpdate)
                 {
+                    // Jump completed
+                    OnJumpCompleted?.Invoke();
                     NextState();
                 }
                 else
