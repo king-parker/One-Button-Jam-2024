@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     public PowerSelector powerSelector;
     public PlayerControls controls;
     public Rigidbody2D rb;
+    public TimeTracker timeTracker;
 
     public static event Action OnJumpCompleted;
 
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     private float power = 0;
     private PlayerState state;
     private bool movedLastUpdate = false;
+    private float deltaSelectionTime = 0f;
 
     public enum PlayerState
     {
@@ -77,6 +79,9 @@ public class PlayerController : MonoBehaviour, IPlayer
                 else if (rb.velocity.magnitude == 0 && !movedLastUpdate)
                 {
                     // Jump completed
+                    PlayerData.IncrementPlayerJumps();
+                    PlayerData.SetPlayerDistance(transform.position.x);
+                    PlayerData.AddSelectionTime(deltaSelectionTime);
                     OnJumpCompleted?.Invoke();
                     NextState();
                 }
@@ -140,6 +145,7 @@ public class PlayerController : MonoBehaviour, IPlayer
             case PlayerState.Disabled:
                 break;
             case PlayerState.AngleSelect:
+                timeTracker.RestartTime();
                 angleSelector.StartIndicator();
                 break;
             case PlayerState.PowerSelect:
@@ -147,6 +153,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 powerSelector.StartIndicator();
                 break;
             case PlayerState.Jumping:
+                deltaSelectionTime = timeTracker.GetElapsedTime();
                 angleSelector.HideIndicator();
                 powerSelector.StopIndicator();
                 powerSelector.HideIndicator();

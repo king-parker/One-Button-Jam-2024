@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        PlayerData.ResetData();
         gameState = GameState.Gameplay;
         OnGameStarted?.Invoke();
         isFirstGameStart = false;
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
+        PlayerData.ResetData();
         gameState = GameState.Gameplay;
         gameOverScreen.SetActive(false);
         OnRestart?.Invoke();

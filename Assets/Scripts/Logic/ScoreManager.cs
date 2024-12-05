@@ -10,6 +10,7 @@ public class ScoreManager : MonoBehaviour
     public float distanceWeight = 10f;
     public float timeFactorLogBase = Mathf.Exp(1);
     public float minTimeFactor = 0.1f;
+    public float timeFactorBufferTime = 1f;
     public float jumpPenaltyWeight = 20f;
     public float minScoreAddition = 0f;
 
@@ -51,8 +52,21 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateScore()
     {
-        currentScore = GameObject.FindWithTag("Player").transform.position.x;
+        float timeEfficiencyFactor = CalcTimeFactor(PlayerData.DeltaSelectionTime);
+        currentScore = Mathf.Max(minScoreAddition, ((PlayerData.PlayerDistance * distanceWeight * timeEfficiencyFactor) - jumpPenaltyWeight));
         SetScoreText();
+    }
+
+    private float CalcTimeFactor(float time)
+    {
+        // Use a time buffer to filter out spamming jump being favored by "quick decisions"
+        // Time factor is 1 and doesn't drop until after the buffer time
+        float adjustedTime = Mathf.Max(time - timeFactorBufferTime, 0);
+
+        float calcualatedFactor = 1 / (1 + Mathf.Log((1 + time), timeFactorLogBase));
+
+        // Use max so the time factor is capped at a minimum value
+        return Mathf.Max(minTimeFactor, calcualatedFactor); 
     }
 
     private void SetScoreForGameStart()

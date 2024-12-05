@@ -7,16 +7,18 @@ public class GameOverManager : MonoBehaviour
 {
     [Header("Text Fields")]
     public Text scoreText;
-    public Text statsText;
+    public Text jumpStatText;
+    public Text timeStatText;
+    public Text distanceStatText;
 
     private void OnEnable()
     {
-        ScoreManager.OnFinalScore += SetScore;
+        ScoreManager.OnFinalScore += SetResults;
     }
 
     private void OnDisable()
     {
-        ScoreManager.OnFinalScore -= SetScore;
+        ScoreManager.OnFinalScore -= SetResults;
     }
 
     // Start is called before the first frame update
@@ -31,8 +33,15 @@ public class GameOverManager : MonoBehaviour
         
     }
 
-    private void SetScore(float score)
+    private void SetResults(float score)
     {
+        int jumps = PlayerData.PlayerJumps;
+        float time = PlayerData.SessionSelectionTime;
+        float distance = PlayerData.PlayerDistance;
+
         scoreText.text = $"Score: {score:F0}";
+        jumpStatText.text = $"Successful Jumps: {jumps}";
+        timeStatText.text = $"Selection Time: {time:f2}s";
+        distanceStatText.text = $"Distance Traveled: {distance:f0}";
     }
 }

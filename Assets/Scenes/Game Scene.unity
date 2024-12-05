@@ -1063,8 +1063,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -223, y: -67}
-  m_SizeDelta: {x: 246.08093, y: 63.8679}
+  m_AnchoredPosition: {x: -223, y: -55.93744}
+  m_SizeDelta: {x: 246.0809, y: 85.993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &426110363
 MonoBehaviour:
@@ -1093,7 +1093,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 4
     m_MaxSize: 48
-    m_Alignment: 3
+    m_Alignment: 6
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -1140,6 +1140,7 @@ MonoBehaviour:
   distanceWeight: 10
   timeFactorLogBase: 2.7182817
   minTimeFactor: 0.1
+  timeFactorBufferTime: 1
   jumpPenaltyWeight: 20
   minScoreAddition: 0
   scoreText: {fileID: 426110363}
@@ -1482,6 +1483,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5495951156609236057, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
   m_PrefabInstance: {fileID: 599362121}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &605381163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 605381165}
+  - component: {fileID: 605381164}
+  m_Layer: 0
+  m_Name: Time Tracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &605381164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605381163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff9ed56552829343925792e7b64e6ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &605381165
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605381163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &656024967
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3745,6 +3790,7 @@ MonoBehaviour:
   angleSelector: {fileID: 1674462806}
   powerSelector: {fileID: 732575489}
   rb: {fileID: 1731834491}
+  timeTracker: {fileID: 605381164}
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4586,3 +4632,4 @@ SceneRoots:
   - {fileID: 858191978}
   - {fileID: 490953362}
   - {fileID: 1670326342}
+  - {fileID: 605381165}
