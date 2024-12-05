@@ -2822,7 +2822,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.4392157, g: 0.4509804, b: 0.47058824, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3782,7 +3782,7 @@ GameObject:
   - component: {fileID: 1830498447}
   - component: {fileID: 1830498448}
   m_Layer: 0
-  m_Name: Ground
+  m_Name: Chunk Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3833,6 +3833,13 @@ MonoBehaviour:
   chunkWidth: 4
   spawnDistance: 40
   chunkFloorY: -4
+  startSpawnPosition: 20
+  maxProgression: 1000
+  hazardProgression: 1500
+  minSafeChance: 0.4
+  maxSafeChance: 0.7
+  minSingleSpikeChance: 0.3
+  maxSingleSpikeChance: 0.7
   player: {fileID: 1731834492}
 --- !u!1001 &1856478940
 PrefabInstance:

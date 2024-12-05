@@ -17,7 +17,6 @@ public class ChunkLogic : MonoBehaviour
         float distance = player.transform.position.x - transform.position.x;
         if (distance >= freeDistance)
         {
-            print("Name: " + this.name + "\nDistance: " + distance + "\nPosition: " + transform.position);
             Destroy(gameObject);
         }
     }
