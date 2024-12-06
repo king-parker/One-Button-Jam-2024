@@ -192,7 +192,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press Space Bar, Press A, Left Mouse Click, or Tap Screen to restart game
+  m_Text: Press Space Bar, Left Mouse Click, or Tap Screen to restart game
 --- !u!222 &1145458497
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -230,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d476e32d03d7945bc20fa1cdad24d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverScreen: {fileID: 1404197351}
   scoreText: {fileID: 2135330964}
   jumpStatText: {fileID: 1933515701}
   timeStatText: {fileID: 1600305607}
@@ -246,7 +247,8 @@ Transform:
   m_LocalPosition: {x: 373.8142, y: 270.7621, z: -2.368562}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2050059311}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1404197351
@@ -701,7 +703,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1404197352}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1366714548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -791,5 +793,4 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 2050059311}
   - {fileID: 1366714548}

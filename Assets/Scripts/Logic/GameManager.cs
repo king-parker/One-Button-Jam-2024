@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,24 +40,19 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         uiControls.Enable();
+        GameOverManager.OnGameOverScreenReady += SetGameOverScreen;
     }
 
     void OnDisable()
     {
         uiControls.Disable();
+        GameOverManager.OnGameOverScreenReady -= SetGameOverScreen;
     }
 
     void Start()
     {
         gameState = GameState.TitleScreen;
         OnBoot?.Invoke();
-        Invoke(nameof(LateStart), .125f);
-    }
-
-    // The scene object is not available right after invoking OnBoot. This delayed start function attempts to avoid the race condition.
-    public void LateStart()
-    {
-        gameOverScreen = sceneLoadingManager.GetGameOverScene().GetRootGameObjects()[0].transform.GetChild(0).gameObject;
     }
 
     public static bool IsFirstGameStart()
@@ -100,5 +96,10 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void SetGameOverScreen(GameObject gameOverScreen)
+    {
+        this.gameOverScreen = gameOverScreen;
     }
 }

@@ -229,7 +229,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press Space Bar, Press A, Left Mouse Click, or Tap Screen to start
+  m_Text: Press Space Bar, Left Mouse Click, or Tap Screen to start
 --- !u!222 &760326708
 CanvasRenderer:
   m_ObjectHideFlags: 0

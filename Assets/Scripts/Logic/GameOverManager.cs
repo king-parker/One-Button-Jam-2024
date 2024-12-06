@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,16 @@ using UnityEngine.UI;
 
 public class GameOverManager : MonoBehaviour
 {
+    [Header("UI Container")]
+    public GameObject gameOverScreen;
+
     [Header("Text Fields")]
     public Text scoreText;
     public Text jumpStatText;
     public Text timeStatText;
     public Text distanceStatText;
+
+    public static event Action<GameObject> OnGameOverScreenReady;
 
     private void OnEnable()
     {
@@ -21,16 +27,9 @@ public class GameOverManager : MonoBehaviour
         ScoreManager.OnFinalScore -= SetResults;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        OnGameOverScreenReady?.Invoke(gameOverScreen);
     }
 
     private void SetResults(float score)
