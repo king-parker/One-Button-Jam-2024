@@ -6,11 +6,16 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IPlayer
 {
+    public PlayerControls controls;
+
+    [Header("References")]
     public AngleSelector angleSelector;
     public PowerSelector powerSelector;
-    public PlayerControls controls;
     public Rigidbody2D rb;
     public TimeTracker timeTracker;
+
+    [Header("SFX Audio")]
+    public AudioClip jumpAudio;
 
     public static event Action OnJumpCompleted;
 
@@ -159,6 +164,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 powerSelector.HideIndicator();
                 rb.AddForce(new Vector2(power * Mathf.Cos(Mathf.Deg2Rad * angle), power * Mathf.Sin(Mathf.Deg2Rad * angle)));
                 movedLastUpdate = true;
+                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, 0.6f);
                 break;
         }
 

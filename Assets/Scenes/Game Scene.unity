@@ -1673,6 +1673,7 @@ MonoBehaviour:
   powerSelector: {fileID: 732575489}
   rb: {fileID: 1731834491}
   timeTracker: {fileID: 605381164}
+  jumpAudio: {fileID: 8300000, guid: d918fee2873439f4e8b9fd31b1af074c, type: 3}
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0
