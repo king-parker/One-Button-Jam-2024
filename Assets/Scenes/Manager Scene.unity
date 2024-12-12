@@ -256,6 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxObject: {fileID: 7024600196206549157, guid: 849d9020ac4fb8a4ca88ee2dc5ef04b8, type: 3}
+  continuousSFXObject: {fileID: 1957879239798323772, guid: 9e709f36b126d6a4e957af7d3878adb4, type: 3}
 --- !u!1 &1349813133
 GameObject:
   m_ObjectHideFlags: 0

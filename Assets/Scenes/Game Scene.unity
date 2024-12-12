@@ -1674,8 +1674,9 @@ MonoBehaviour:
   timeTracker: {fileID: 605381164}
   rb: {fileID: 1731834491}
   bodyCollider: {fileID: 1731834490}
-  jumpAudio: {fileID: 8300000, guid: d918fee2873439f4e8b9fd31b1af074c, type: 3}
-  landingAudio: {fileID: 8300000, guid: d918fee2873439f4e8b9fd31b1af074c, type: 3}
+  jumpAudio: {fileID: 8300000, guid: 440ddc436cf88fb4e9714f3b0a7a8e45, type: 3}
+  landingAudio: {fileID: 8300000, guid: 2a4b8612bc41ea640b8b3739f9d74b86, type: 3}
+  slidingAudio: {fileID: 8300000, guid: cb0771ab2b7c35c41aab4cd365086d5f, type: 3}
   audioVolumeSpeed: 30
   groundCheckDelay: 0.5
 --- !u!61 &1731834490
@@ -1748,7 +1749,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!4 &1731834492
 Transform:

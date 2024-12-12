@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     [Header("SFX Audio")]
     public AudioClip jumpAudio;
     public AudioClip landingAudio;
+    public AudioClip slidingAudio;
 
     public static event Action OnJumpCompleted;
 
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     [Header("Drag SFX Properties")]
     [SerializeField]private float audioVolumeSpeed = 30f;
+    private AudioSource slidingSFXSource;
 
     [Header("Other Properties")]
     public float groundCheckDelay = 0.5f;
@@ -115,11 +117,29 @@ public class PlayerController : MonoBehaviour, IPlayer
                 break;
         }
 
+        if (slidingSFXSource != null)
+        {
+            if (rb.velocity.magnitude > 0)
+            {
+                slidingSFXSource.volume = rb.velocity.magnitude / audioVolumeSpeed;
+            }
+            else
+            {
+                Destroy(slidingSFXSource);
+            }
+        }
+
         // Outside of jumping case so sound is played when in disabled state
         if (allowGroundCheck && !wasGrounded && IsGrounded())
         {
             wasGrounded = true;
             SFXManager.instance.PlaySFXClip(landingAudio, this.transform, 1f);
+
+            if (rb.velocity.magnitude > 0 && slidingSFXSource == null)
+            {
+                slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, 1f);
+                slidingSFXSource.Play();
+            }
         }
     }
 

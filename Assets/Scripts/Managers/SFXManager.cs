@@ -8,8 +8,6 @@ public class SFXManager : MonoBehaviour
 
     [SerializeField] private AudioSource sfxObject;
     [SerializeField] private AudioSource continuousSFXObject;
-    // TODO: Remove????
-    private Dictionary<string, AudioSource> audioSources;
 
     private void Awake()
     {
@@ -17,8 +15,6 @@ public class SFXManager : MonoBehaviour
         {
             instance = this;
         }
-
-        audioSources = new Dictionary<string, AudioSource>();
     }
 
     public void PlaySFXClip(AudioClip audioClip, Transform spawnTransform, float volume = 1f)
@@ -31,10 +27,12 @@ public class SFXManager : MonoBehaviour
         Destroy(audioSource.gameObject, clipLength);
     }
 
-    public void AddAndPlayContinuousSFXClip(AudioClip audioClip, string clipName, GameObject parent, float volume = 1f)
+    public AudioSource CreateContinuousSFXClip(AudioClip audioClip, GameObject parent, float volume = 1f)
     {
         AudioSource audioSource = CreateAudioSource(continuousSFXObject, audioClip, parent.transform, volume);
         audioSource.gameObject.transform.SetParent(parent.transform, true);
+
+        return audioSource;
     }
 
     private AudioSource CreateAudioSource(AudioSource sfxObject, AudioClip audioClip, Transform spawnTransform, float volume)
