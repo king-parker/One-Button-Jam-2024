@@ -1671,9 +1671,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angleSelector: {fileID: 1674462806}
   powerSelector: {fileID: 732575489}
-  rb: {fileID: 1731834491}
   timeTracker: {fileID: 605381164}
+  rb: {fileID: 1731834491}
+  bodyCollider: {fileID: 1731834490}
   jumpAudio: {fileID: 8300000, guid: d918fee2873439f4e8b9fd31b1af074c, type: 3}
+  landingAudio: {fileID: 8300000, guid: d918fee2873439f4e8b9fd31b1af074c, type: 3}
+  audioVolumeSpeed: 30
+  groundCheckDelay: 0.5
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0

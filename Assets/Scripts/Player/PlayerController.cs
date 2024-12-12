@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.Image;
 
 public class PlayerController : MonoBehaviour, IPlayer
 {
@@ -11,19 +13,32 @@ public class PlayerController : MonoBehaviour, IPlayer
     [Header("References")]
     public AngleSelector angleSelector;
     public PowerSelector powerSelector;
-    public Rigidbody2D rb;
     public TimeTracker timeTracker;
+    public Rigidbody2D rb;
+    public Collider2D bodyCollider;
 
     [Header("SFX Audio")]
     public AudioClip jumpAudio;
+    public AudioClip landingAudio;
 
     public static event Action OnJumpCompleted;
 
     private float angle = 0;
     private float power = 0;
     private PlayerState state;
+    private float distanceToGround = 0f;
+    private float groundedRaycastOffset = 0.3f;
     private bool movedLastUpdate = false;
+    private bool wasGrounded = true;
+    private bool allowGroundCheck = false;
+    private int groundCheckLayerMask = 0;
     private float deltaSelectionTime = 0f;
+
+    [Header("Drag SFX Properties")]
+    [SerializeField]private float audioVolumeSpeed = 30f;
+
+    [Header("Other Properties")]
+    public float groundCheckDelay = 0.5f;
 
     public enum PlayerState
     {
@@ -68,6 +83,9 @@ public class PlayerController : MonoBehaviour, IPlayer
             state = PlayerState.AngleSelect;
             angleSelector.StartIndicator();
         }
+
+        distanceToGround = bodyCollider.bounds.extents.y;
+        groundCheckLayerMask = LayerMask.GetMask(Layers.WorldName);
     }
 
     void FixedUpdate()
@@ -95,6 +113,13 @@ public class PlayerController : MonoBehaviour, IPlayer
                     movedLastUpdate = false;
                 }
                 break;
+        }
+
+        // Outside of jumping case so sound is played when in disabled state
+        if (allowGroundCheck && !wasGrounded && IsGrounded())
+        {
+            wasGrounded = true;
+            SFXManager.instance.PlaySFXClip(landingAudio, this.transform, 1f);
         }
     }
 
@@ -164,7 +189,10 @@ public class PlayerController : MonoBehaviour, IPlayer
                 powerSelector.HideIndicator();
                 rb.AddForce(new Vector2(power * Mathf.Cos(Mathf.Deg2Rad * angle), power * Mathf.Sin(Mathf.Deg2Rad * angle)));
                 movedLastUpdate = true;
-                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, 0.6f);
+                wasGrounded = false;
+                allowGroundCheck = false;
+                Invoke(nameof(GroundCheckTimerFinished), groundCheckDelay);
+                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, 1f);
                 break;
         }
 
@@ -185,5 +213,15 @@ public class PlayerController : MonoBehaviour, IPlayer
         {
             NextState();
         }
+    }
+
+    public bool IsGrounded()
+    {
+        return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
+    }
+
+    private void GroundCheckTimerFinished()
+    {
+        allowGroundCheck = true;
     }
 }
