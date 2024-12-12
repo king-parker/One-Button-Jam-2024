@@ -52,10 +52,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     void Awake()
     {
-        if (controls == null)
-        {
-            controls = new PlayerControls();
-        }
+        controls ??= new PlayerControls();
         controls.Player.Button.started += _ => ButtonPress();
         controls.Player.Button.canceled += _ => ButtonRelease();
     }
@@ -94,8 +91,6 @@ public class PlayerController : MonoBehaviour, IPlayer
     {
         switch (state)
         {
-            case PlayerState.Disabled:
-                return;
             case PlayerState.Jumping:
                 if (rb.velocity.magnitude > 0)
                 {
@@ -125,7 +120,7 @@ public class PlayerController : MonoBehaviour, IPlayer
             }
             else
             {
-                Destroy(slidingSFXSource);
+                Destroy(slidingSFXSource.gameObject);
             }
         }
 
@@ -137,7 +132,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
             if (rb.velocity.magnitude > 0 && slidingSFXSource == null)
             {
-                slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, 1f);
+                slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, .1f);
                 slidingSFXSource.Play();
             }
         }
@@ -212,7 +207,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 wasGrounded = false;
                 allowGroundCheck = false;
                 Invoke(nameof(GroundCheckTimerFinished), groundCheckDelay);
-                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, 1f);
+                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, .1f);
                 break;
         }
 

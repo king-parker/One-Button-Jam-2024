@@ -1676,7 +1676,7 @@ MonoBehaviour:
   bodyCollider: {fileID: 1731834490}
   jumpAudio: {fileID: 8300000, guid: 440ddc436cf88fb4e9714f3b0a7a8e45, type: 3}
   landingAudio: {fileID: 8300000, guid: 2a4b8612bc41ea640b8b3739f9d74b86, type: 3}
-  slidingAudio: {fileID: 8300000, guid: cb0771ab2b7c35c41aab4cd365086d5f, type: 3}
+  slidingAudio: {fileID: 8300000, guid: 4a5015eb65f9c434aa1cd81f9aa24f96, type: 3}
   audioVolumeSpeed: 30
   groundCheckDelay: 0.5
 --- !u!61 &1731834490
