@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5289971738397011350}
   - component: {fileID: -873532823339955051}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SingleSpikeChunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1671,8 +1671,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angleSelector: {fileID: 1674462806}
   powerSelector: {fileID: 732575489}
-  rb: {fileID: 1731834491}
   timeTracker: {fileID: 605381164}
+  rb: {fileID: 1731834491}
+  bodyCollider: {fileID: 1731834490}
+  jumpAudio: {fileID: 8300000, guid: ff3fed4fdd4ff2f409448a235e9363fe, type: 3}
+  landingAudio: {fileID: 8300000, guid: 7e393d55e74c6814ca9b773e748190f9, type: 3}
+  slidingAudio: {fileID: 8300000, guid: 4a5015eb65f9c434aa1cd81f9aa24f96, type: 3}
+  slidingVolumeSpeed: 15
+  landingVolumeHeight: 5
+  groundCheckDelay: 0.15
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1743,7 +1750,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!4 &1731834492
 Transform:

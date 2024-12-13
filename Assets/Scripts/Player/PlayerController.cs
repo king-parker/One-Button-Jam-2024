@@ -1,24 +1,48 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.Image;
 
 public class PlayerController : MonoBehaviour, IPlayer
 {
+    public PlayerControls controls;
+
+    [Header("References")]
     public AngleSelector angleSelector;
     public PowerSelector powerSelector;
-    public PlayerControls controls;
-    public Rigidbody2D rb;
     public TimeTracker timeTracker;
+    public Rigidbody2D rb;
+    public Collider2D bodyCollider;
+
+    [Header("SFX Audio")]
+    public AudioClip jumpAudio;
+    public AudioClip landingAudio;
+    public AudioClip slidingAudio;
 
     public static event Action OnJumpCompleted;
 
     private float angle = 0;
     private float power = 0;
     private PlayerState state;
+    private float distanceToGround = 0f;
+    private float groundedRaycastOffset = 0.3f;
     private bool movedLastUpdate = false;
+    private bool wasGrounded = true;
+    private bool allowGroundCheck = false;
+    private int groundCheckLayerMask = 0;
+    private float peakJumpHeight = 0f;
     private float deltaSelectionTime = 0f;
+
+    [Header("SFX Properties")]
+    [SerializeField]private float slidingVolumeSpeed = 15f;
+    [SerializeField] private float landingVolumeHeight = 15f;
+    private AudioSource slidingSFXSource;
+
+    [Header("Other Properties")]
+    public float groundCheckDelay = 0.5f;
 
     public enum PlayerState
     {
@@ -30,10 +54,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     void Awake()
     {
-        if (controls == null)
-        {
-            controls = new PlayerControls();
-        }
+        controls ??= new PlayerControls();
         controls.Player.Button.started += _ => ButtonPress();
         controls.Player.Button.canceled += _ => ButtonRelease();
     }
@@ -63,14 +84,15 @@ public class PlayerController : MonoBehaviour, IPlayer
             state = PlayerState.AngleSelect;
             angleSelector.StartIndicator();
         }
+
+        distanceToGround = bodyCollider.bounds.extents.y;
+        groundCheckLayerMask = LayerMask.GetMask(Layers.WorldName);
     }
 
     void FixedUpdate()
     {
         switch (state)
         {
-            case PlayerState.Disabled:
-                return;
             case PlayerState.Jumping:
                 if (rb.velocity.magnitude > 0)
                 {
@@ -89,7 +111,35 @@ public class PlayerController : MonoBehaviour, IPlayer
                 {
                     movedLastUpdate = false;
                 }
+
+                if (transform.position.y > peakJumpHeight) { peakJumpHeight = transform.position.y; }
                 break;
+        }
+
+        if (slidingSFXSource != null)
+        {
+            if (rb.velocity.magnitude > 0)
+            {
+                slidingSFXSource.volume = rb.velocity.magnitude / slidingVolumeSpeed;
+            }
+            else
+            {
+                Destroy(slidingSFXSource.gameObject);
+            }
+        }
+
+        // Outside of jumping case so sound is played when in disabled state
+        if (allowGroundCheck && !wasGrounded && IsGrounded())
+        {
+            wasGrounded = true;
+            float landingVolume = Mathf.Lerp(0.2f, 1f, peakJumpHeight / landingVolumeHeight);
+            SFXManager.instance.PlaySFXClip(landingAudio, this.transform, landingVolume);
+
+            if (rb.velocity.magnitude > 0 && slidingSFXSource == null)
+            {
+                slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, 1f);
+                slidingSFXSource.Play();
+            }
         }
     }
 
@@ -159,6 +209,12 @@ public class PlayerController : MonoBehaviour, IPlayer
                 powerSelector.HideIndicator();
                 rb.AddForce(new Vector2(power * Mathf.Cos(Mathf.Deg2Rad * angle), power * Mathf.Sin(Mathf.Deg2Rad * angle)));
                 movedLastUpdate = true;
+                wasGrounded = false;
+                allowGroundCheck = false;
+                Invoke(nameof(GroundCheckTimerFinished), groundCheckDelay);
+                peakJumpHeight = 0;
+                float launchVolume = Mathf.Lerp(0f, .8f, power / powerSelector.maxPower);
+                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, launchVolume);
                 break;
         }
 
@@ -179,5 +235,15 @@ public class PlayerController : MonoBehaviour, IPlayer
         {
             NextState();
         }
+    }
+
+    public bool IsGrounded()
+    {
+        return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
+    }
+
+    private void GroundCheckTimerFinished()
+    {
+        allowGroundCheck = true;
     }
 }
