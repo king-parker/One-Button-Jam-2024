@@ -1674,11 +1674,12 @@ MonoBehaviour:
   timeTracker: {fileID: 605381164}
   rb: {fileID: 1731834491}
   bodyCollider: {fileID: 1731834490}
-  jumpAudio: {fileID: 8300000, guid: 440ddc436cf88fb4e9714f3b0a7a8e45, type: 3}
-  landingAudio: {fileID: 8300000, guid: 2a4b8612bc41ea640b8b3739f9d74b86, type: 3}
+  jumpAudio: {fileID: 8300000, guid: ff3fed4fdd4ff2f409448a235e9363fe, type: 3}
+  landingAudio: {fileID: 8300000, guid: 7e393d55e74c6814ca9b773e748190f9, type: 3}
   slidingAudio: {fileID: 8300000, guid: 4a5015eb65f9c434aa1cd81f9aa24f96, type: 3}
-  audioVolumeSpeed: 30
-  groundCheckDelay: 0.5
+  slidingVolumeSpeed: 15
+  landingVolumeHeight: 5
+  groundCheckDelay: 0.15
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0

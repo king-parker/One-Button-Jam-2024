@@ -33,10 +33,12 @@ public class PlayerController : MonoBehaviour, IPlayer
     private bool wasGrounded = true;
     private bool allowGroundCheck = false;
     private int groundCheckLayerMask = 0;
+    private float peakJumpHeight = 0f;
     private float deltaSelectionTime = 0f;
 
-    [Header("Drag SFX Properties")]
-    [SerializeField]private float audioVolumeSpeed = 30f;
+    [Header("SFX Properties")]
+    [SerializeField]private float slidingVolumeSpeed = 15f;
+    [SerializeField] private float landingVolumeHeight = 15f;
     private AudioSource slidingSFXSource;
 
     [Header("Other Properties")]
@@ -109,6 +111,8 @@ public class PlayerController : MonoBehaviour, IPlayer
                 {
                     movedLastUpdate = false;
                 }
+
+                if (transform.position.y > peakJumpHeight) { peakJumpHeight = transform.position.y; }
                 break;
         }
 
@@ -116,7 +120,7 @@ public class PlayerController : MonoBehaviour, IPlayer
         {
             if (rb.velocity.magnitude > 0)
             {
-                slidingSFXSource.volume = rb.velocity.magnitude / audioVolumeSpeed;
+                slidingSFXSource.volume = rb.velocity.magnitude / slidingVolumeSpeed;
             }
             else
             {
@@ -128,11 +132,12 @@ public class PlayerController : MonoBehaviour, IPlayer
         if (allowGroundCheck && !wasGrounded && IsGrounded())
         {
             wasGrounded = true;
-            SFXManager.instance.PlaySFXClip(landingAudio, this.transform, 1f);
+            float landingVolume = Mathf.Lerp(0.2f, 1f, peakJumpHeight / landingVolumeHeight);
+            SFXManager.instance.PlaySFXClip(landingAudio, this.transform, landingVolume);
 
             if (rb.velocity.magnitude > 0 && slidingSFXSource == null)
             {
-                slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, .1f);
+                slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, 1f);
                 slidingSFXSource.Play();
             }
         }
@@ -207,7 +212,9 @@ public class PlayerController : MonoBehaviour, IPlayer
                 wasGrounded = false;
                 allowGroundCheck = false;
                 Invoke(nameof(GroundCheckTimerFinished), groundCheckDelay);
-                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, .1f);
+                peakJumpHeight = 0;
+                float launchVolume = Mathf.Lerp(0f, .8f, power / powerSelector.maxPower);
+                SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, launchVolume);
                 break;
         }
 
