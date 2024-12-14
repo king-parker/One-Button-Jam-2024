@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2705978511120873188}
   - component: {fileID: 6927052020824581269}
   m_Layer: 8
-  m_Name: SpikeChunk
+  m_Name: SpikeHalfLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
