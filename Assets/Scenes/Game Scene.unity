@@ -1586,7 +1586,7 @@ MonoBehaviour:
   chunkWidth: 10
   spawnDistance: 40
   chunkFloorY: -4
-  startSpawnPosition: 25
+  startSpawnPosition: 30
   maxProgression: 1000
   hazardProgression: 1500
   minSafeChance: 0.05

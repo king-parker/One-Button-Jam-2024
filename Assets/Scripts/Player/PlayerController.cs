@@ -120,7 +120,14 @@ public class PlayerController : MonoBehaviour, IPlayer
         {
             if (rb.velocity.magnitude > 0)
             {
-                slidingSFXSource.volume = rb.velocity.magnitude / slidingVolumeSpeed;
+                if (IsGrounded())
+                {
+                    slidingSFXSource.volume = rb.velocity.magnitude / slidingVolumeSpeed;
+                }
+                else
+                {
+                    slidingSFXSource.volume = 0;
+                }
             }
             else
             {

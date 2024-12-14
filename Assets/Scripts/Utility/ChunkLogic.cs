@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ChunkLogic : MonoBehaviour
 {
-    public float freeDistance = 16;
-    public PlayerController player;
+    public float freeDistance = 20;
+
+    private PlayerController player;
 
     void Start()
     {
