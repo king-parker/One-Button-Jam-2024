@@ -10,7 +10,7 @@ public class ChunkLogic : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        player = GameObject.FindGameObjectWithTag(Tags.Player).GetComponent<PlayerController>();
     }
 
     void Update()

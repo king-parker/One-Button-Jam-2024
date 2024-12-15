@@ -10,7 +10,7 @@ public class OutOfBounds : MonoBehaviour
     {
         if (gameManager == null)
         {
-            gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+            gameManager = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManager>();
         }
     }
 
