@@ -1302,12 +1302,15 @@ MonoBehaviour:
   timeTracker: {fileID: 605381164}
   rb: {fileID: 1731834491}
   bodyCollider: {fileID: 1731834490}
+  defaultMaterial: {fileID: 6200000, guid: be592a67e8ef7a6489bb836fb7997be2, type: 2}
+  highFrictionMaterial: {fileID: 6200000, guid: ba6e6c3eb405dd3468fb00c877d7323b, type: 2}
   jumpAudio: {fileID: 8300000, guid: ff3fed4fdd4ff2f409448a235e9363fe, type: 3}
   landingAudio: {fileID: 8300000, guid: 7e393d55e74c6814ca9b773e748190f9, type: 3}
   slidingAudio: {fileID: 8300000, guid: 4a5015eb65f9c434aa1cd81f9aa24f96, type: 3}
   slidingVolumeSpeed: 15
   landingVolumeHeight: 5
   groundCheckDelay: 0.15
+  stopMovingTolerance: 0.01
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1369,7 +1372,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: be592a67e8ef7a6489bb836fb7997be2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

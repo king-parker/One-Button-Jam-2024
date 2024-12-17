@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEngine.UI.Image;
 
 public class PlayerController : MonoBehaviour, IPlayer
 {
@@ -16,6 +11,8 @@ public class PlayerController : MonoBehaviour, IPlayer
     public TimeTracker timeTracker;
     public Rigidbody2D rb;
     public Collider2D bodyCollider;
+    public PhysicsMaterial2D defaultMaterial;
+    public PhysicsMaterial2D highFrictionMaterial;
 
     [Header("SFX Audio")]
     public AudioClip jumpAudio;
@@ -35,6 +32,10 @@ public class PlayerController : MonoBehaviour, IPlayer
     private int groundCheckLayerMask = 0;
     private float peakJumpHeight = 0f;
     private float deltaSelectionTime = 0f;
+    private bool isOnPlatform = false;
+    private MovingPlatform movingPlatform;
+    private float platformSpeedAdjust = 0f;
+    private float defaultGravity;
 
     [Header("SFX Properties")]
     [SerializeField]private float slidingVolumeSpeed = 15f;
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     [Header("Other Properties")]
     public float groundCheckDelay = 0.5f;
+    public float stopMovingTolerance = 0.01f;
 
     public enum PlayerState
     {
@@ -87,18 +89,30 @@ public class PlayerController : MonoBehaviour, IPlayer
 
         distanceToGround = bodyCollider.bounds.extents.y;
         groundCheckLayerMask = LayerMask.GetMask(Layers.WorldName);
+        defaultGravity = rb.gravityScale;
     }
 
     void FixedUpdate()
     {
+        // Check if player is on a platform so the platform speed can be considered
+        if (isOnPlatform && movingPlatform != null)
+        {
+            platformSpeedAdjust = movingPlatform.GetVelocity().x;
+        }
+        else
+        {
+            platformSpeedAdjust = 0f;
+        }
+
         switch (state)
         {
             case PlayerState.Jumping:
-                if (rb.velocity.magnitude > 0)
+                float checkSpeed = rb.velocity.x > 0 ? rb.velocity.magnitude - platformSpeedAdjust : -rb.velocity.magnitude - platformSpeedAdjust;
+                if (checkSpeed > stopMovingTolerance)
                 {
                     movedLastUpdate = true;
                 }
-                else if (rb.velocity.magnitude == 0 && !movedLastUpdate)
+                else if (checkSpeed <= stopMovingTolerance && !movedLastUpdate)
                 {
                     // Jump completed
                     PlayerData.IncrementPlayerJumps();
@@ -116,9 +130,10 @@ public class PlayerController : MonoBehaviour, IPlayer
                 break;
         }
 
+        // Adjust sliding SFX volume
         if (slidingSFXSource != null)
         {
-            if (rb.velocity.magnitude > 0)
+            if ((rb.velocity.x - platformSpeedAdjust) > 0)
             {
                 if (IsGrounded())
                 {
@@ -138,10 +153,12 @@ public class PlayerController : MonoBehaviour, IPlayer
         // Outside of jumping case so sound is played when in disabled state
         if (allowGroundCheck && !wasGrounded && IsGrounded())
         {
+            // Create landing adio
             wasGrounded = true;
             float landingVolume = Mathf.Lerp(0.2f, 1f, peakJumpHeight / landingVolumeHeight);
             SFXManager.instance.PlaySFXClip(landingAudio, this.transform, landingVolume);
 
+            // Create sliding audio
             if (rb.velocity.magnitude > 0 && slidingSFXSource == null)
             {
                 slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, 1f);
@@ -200,28 +217,49 @@ public class PlayerController : MonoBehaviour, IPlayer
         switch (nextState)
         {
             case PlayerState.Disabled:
+                angleSelector.HideIndicator();
+                powerSelector.HideIndicator();
                 break;
             case PlayerState.AngleSelect:
+                // Start timer for decision time stat
                 timeTracker.RestartTime();
+
                 angleSelector.StartIndicator();
+
+                // Increase player friction to "stick" player to moving platform
+                if (isOnPlatform) { rb.sharedMaterial = highFrictionMaterial; }
+
+                if (slidingSFXSource != null) { Destroy(slidingSFXSource.gameObject); }
                 break;
             case PlayerState.PowerSelect:
                 angleSelector.StopIndicator();
                 powerSelector.StartIndicator();
                 break;
             case PlayerState.Jumping:
+                // Record decision time to report
                 deltaSelectionTime = timeTracker.GetElapsedTime();
+
+                // Make sure the indicators are hidden
                 angleSelector.HideIndicator();
                 powerSelector.StopIndicator();
                 powerSelector.HideIndicator();
+
+                // Communicate with player's rigid body
                 rb.AddForce(new Vector2(power * Mathf.Cos(Mathf.Deg2Rad * angle), power * Mathf.Sin(Mathf.Deg2Rad * angle)));
+                rb.sharedMaterial = defaultMaterial;
+                rb.gravityScale = defaultGravity;
+
+                // Set flags that are checked durring launch state
                 movedLastUpdate = true;
                 wasGrounded = false;
                 allowGroundCheck = false;
                 Invoke(nameof(GroundCheckTimerFinished), groundCheckDelay);
+
+                // Manage audio for the launch phase
                 peakJumpHeight = 0;
                 float launchVolume = Mathf.Lerp(0f, .8f, power / powerSelector.maxPower);
                 SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, launchVolume);
+
                 break;
         }
 
@@ -252,5 +290,34 @@ public class PlayerController : MonoBehaviour, IPlayer
     private void GroundCheckTimerFinished()
     {
         allowGroundCheck = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(Tags.MovingPlatform))
+        {
+            // Check if the contact points are for surfaces point upwards
+            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contacts);
+
+            foreach (var contact in contacts)
+            {
+                if (Vector2.Dot(contact.normal, Vector2.up) > 0.7)
+                {
+                    isOnPlatform = true;
+                    movingPlatform = collision.gameObject.GetComponent<MovingPlatform>();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(Tags.MovingPlatform))
+        {
+            isOnPlatform = false;
+            movingPlatform = null;
+        }
     }
 }
