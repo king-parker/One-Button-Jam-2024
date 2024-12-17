@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class ChunkLogic : MonoBehaviour
 {
-    public float freeDistance = 16;
-    public PlayerController player;
+    public float freeDistance = 20;
+
+    private PlayerController player;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        player = GameObject.FindGameObjectWithTag(Tags.Player).GetComponent<PlayerController>();
     }
 
     void Update()

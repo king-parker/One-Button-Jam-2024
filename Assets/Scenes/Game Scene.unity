@@ -1057,7 +1057,7 @@ Transform:
   m_GameObject: {fileID: 1375588344}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14, y: 7.72, z: -10}
+  m_LocalPosition: {x: 14, y: 7.22, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1302,12 +1302,15 @@ MonoBehaviour:
   timeTracker: {fileID: 605381164}
   rb: {fileID: 1731834491}
   bodyCollider: {fileID: 1731834490}
+  defaultMaterial: {fileID: 6200000, guid: be592a67e8ef7a6489bb836fb7997be2, type: 2}
+  highFrictionMaterial: {fileID: 6200000, guid: ba6e6c3eb405dd3468fb00c877d7323b, type: 2}
   jumpAudio: {fileID: 8300000, guid: ff3fed4fdd4ff2f409448a235e9363fe, type: 3}
   landingAudio: {fileID: 8300000, guid: 7e393d55e74c6814ca9b773e748190f9, type: 3}
   slidingAudio: {fileID: 8300000, guid: 4a5015eb65f9c434aa1cd81f9aa24f96, type: 3}
   slidingVolumeSpeed: 15
   landingVolumeHeight: 5
   groundCheckDelay: 0.15
+  stopMovingTolerance: 0.01
 --- !u!61 &1731834490
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1369,7 +1372,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: be592a67e8ef7a6489bb836fb7997be2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1470,6 +1473,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1791600865}
   - component: {fileID: 1791600864}
+  - component: {fileID: 1791600866}
   m_Layer: 0
   m_Name: Player Camera
   m_TagString: Untagged
@@ -1525,13 +1529,26 @@ Transform:
   m_GameObject: {fileID: 1791600863}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14, y: 7.72, z: -10}
+  m_LocalPosition: {x: 14, y: 7.22, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 279019698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1791600866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791600863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2b9e6404762e0940bee72eba75e654e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yPosition: 7.22
 --- !u!1 &1830498446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1586,7 +1603,7 @@ MonoBehaviour:
   chunkWidth: 10
   spawnDistance: 40
   chunkFloorY: -4
-  startSpawnPosition: 25
+  startSpawnPosition: 30
   maxProgression: 1000
   hazardProgression: 1500
   minSafeChance: 0.05

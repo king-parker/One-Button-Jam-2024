@@ -92,7 +92,7 @@ public class ChunkManager : MonoBehaviour
 
     private GameObject ChooseSpikeSide()
     {
-        int sideSelect = Random.Range(0, 1);
+        int sideSelect = Random.Range(0, 2);
         if (sideSelect == 0)
         {
             return spikeHalfLeft;
