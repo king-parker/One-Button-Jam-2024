@@ -1597,37 +1597,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f010aeeb6d5f6464c9e9f3e0908d85a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseChunk: {fileID: 6218714669655649827, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
-  spikeHalfRight: {fileID: 1832244546576180856, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
-  spikeHalfLeft: {fileID: 3573682836918048758, guid: 5e5bfc68184f58343a613ec58f075a88, type: 3}
-  spikeEdges: {fileID: 1832244546576180856, guid: 0a9b4a80799d0074a923130cc2557a61, type: 3}
-  movingPlatformShort: {fileID: 8193975902164587032, guid: 6abb3847c060ec94fa078af414601814, type: 3}
-  gapSmall: {fileID: 2746001188014870729, guid: b3b4799e0eb18964faa8860fab61c830, type: 3}
-  gapLarge: {fileID: 2746001188014870729, guid: fe4d99758b9865946b3015126acc677d, type: 3}
-  wall: {fileID: 2433897062178947417, guid: 21bf562ac1cdfff42ae592c721f2c7d6, type: 3}
-  spikeCeiling: {fileID: 2178422488429310053, guid: 81100700db2f4a842bcfcdc5c31744c9, type: 3}
   chunkWidth: 10
   spawnDistance: 40
   chunkFloorY: -4
   startSpawnPosition: 30
+  baseChunk: {fileID: 6218714669655649827, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
   safeProgression: 1000
-  hazardProgression: 1500
   minSafeChance: 0.05
   maxSafeChance: 0.5
-  minHalfSpikeWeight: 0.3
-  maxHalfSpikeWeight: 0.7
-  minEdgeSpikeWeight: 0.3
-  maxEdgeSpikeWeight: 0.7
-  minMovingPlatformShortWeight: 0.3
-  maxMovingPlatformShortWeight: 0.7
-  minSmallGapWeight: 0.3
-  maxSmallGapWeight: 0.7
-  minLargeGapWeight: 0.3
-  maxLargeGapWeight: 0.7
-  minWallWeight: 0.3
-  maxWallWeight: 0.7
-  minCeilingSpikeWeight: 0.3
-  maxCeilingSpikeWeight: 0.7
+  spikeHalfRight:
+    chunk: {fileID: 1832244546576180856, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
+    chunkType: 1
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
+  spikeHalfLeft:
+    chunk: {fileID: 3573682836918048758, guid: 5e5bfc68184f58343a613ec58f075a88, type: 3}
+    chunkType: 1
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
+  spikeEdges:
+    chunk: {fileID: 1832244546576180856, guid: 0a9b4a80799d0074a923130cc2557a61, type: 3}
+    chunkType: 1
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
+  movingPlatformShort:
+    chunk: {fileID: 8193975902164587032, guid: 6abb3847c060ec94fa078af414601814, type: 3}
+    chunkType: 2
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
+  gapSmall:
+    chunk: {fileID: 2746001188014870729, guid: b3b4799e0eb18964faa8860fab61c830, type: 3}
+    chunkType: 3
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
+  gapLarge:
+    chunk: {fileID: 2746001188014870729, guid: fe4d99758b9865946b3015126acc677d, type: 3}
+    chunkType: 4
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
+  wall:
+    chunk: {fileID: 2433897062178947417, guid: 21bf562ac1cdfff42ae592c721f2c7d6, type: 3}
+    chunkType: 5
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
+  spikeCeiling:
+    chunk: {fileID: 2178422488429310053, guid: 81100700db2f4a842bcfcdc5c31744c9, type: 3}
+    chunkType: 6
+    unlockDistance: 0
+    maxProgression: 1500
+    minWeight: 0.3
+    maxWeight: 0.7
   player: {fileID: 1731834492}
 --- !u!1001 &1990765892
 PrefabInstance:

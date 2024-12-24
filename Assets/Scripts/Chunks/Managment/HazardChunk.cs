@@ -46,7 +46,11 @@ public class HazardChunk
 
     public float GetWeight() { return weight; }
 
-    public void RuleUpdate(ChunkType lastChunkSpawn) { }
+    // TODO: Make abstract?
+    public void RecordLastChunkType(ChunkType lastChunkSpawn) { }
+
+    // TODO: Make abstract?
+    public void RuleUpdate() { }
 
     public bool IsChunkSelected(float selectValue, bool rangeTopInclusive = false)
     {

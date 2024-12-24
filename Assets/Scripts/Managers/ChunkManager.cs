@@ -4,17 +4,6 @@ using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
-    [Header("Chunk Prefabs")]
-    public GameObject baseChunk;
-    public GameObject spikeHalfRight;
-    public GameObject spikeHalfLeft;
-    public GameObject spikeEdges;
-    public GameObject movingPlatformShort;
-    public GameObject gapSmall;
-    public GameObject gapLarge;
-    public GameObject wall;
-    public GameObject spikeCeiling;
-
     [Header("Basic Chunk Settings")]
     public float chunkWidth = 10f;
     public float spawnDistance = 40f;
@@ -22,25 +11,24 @@ public class ChunkManager : MonoBehaviour
     // Spawn doesn't start at -10 so there a base amount of base blocks with no hazards
     public float startSpawnPosition = 20f;
 
-    [Header("Progression Settings")]
+    [Header("Safe Chunk Settings")]
+    public GameObject baseChunk;
     public float safeProgression = 1000f;
-    public float hazardProgression = 1500f;
     public float minSafeChance = 0.05f;
     public float maxSafeChance = 0.5f;
-    public float minHalfSpikeWeight = 0.3f;
-    public float maxHalfSpikeWeight = 0.7f;
-    public float minEdgeSpikeWeight = 0.3f;
-    public float maxEdgeSpikeWeight = 0.7f;
-    public float minMovingPlatformShortWeight = 0.3f;
-    public float maxMovingPlatformShortWeight = 0.7f;
-    public float minSmallGapWeight = 0.3f;
-    public float maxSmallGapWeight = 0.7f;
-    public float minLargeGapWeight = 0.3f;
-    public float maxLargeGapWeight = 0.7f;
-    public float minWallWeight = 0.3f;
-    public float maxWallWeight = 0.7f;
-    public float minCeilingSpikeWeight = 0.3f;
-    public float maxCeilingSpikeWeight = 0.7f;
+
+    [Header("Hazard Chunks")]
+    // TODO: Combine spikeHalfRight and spikeHalfLeft into spikeHalf and as part of GetChunk, randomly select a half
+    [SerializeField] private HazardChunk spikeHalfRight;
+    [SerializeField] private HazardChunk spikeHalfLeft;
+    [SerializeField] private HazardChunk spikeEdges;
+    [SerializeField] private HazardChunk movingPlatformShort;
+    [SerializeField] private HazardChunk gapSmall;
+    [SerializeField] private HazardChunk gapLarge;
+    [SerializeField] private HazardChunk wall;
+    [SerializeField] private HazardChunk spikeCeiling;
+    private HazardChunk[] hazardChunks;
+    private ChunkType lastChunkType = ChunkType.NoneOrSafe;
 
     [Header("Player Reference")]
     public Transform player;
@@ -49,6 +37,12 @@ public class ChunkManager : MonoBehaviour
 
     void Start()
     {
+        hazardChunks = new HazardChunk[] { spikeHalfRight, spikeHalfLeft, spikeEdges, movingPlatformShort, gapSmall, gapLarge, wall, spikeCeiling };
+        foreach (HazardChunk chunk in hazardChunks)
+        {
+            chunk.Setup();
+        }
+
         nextSpawnPositionX = startSpawnPosition;
         ManageChunks();
     }
@@ -63,6 +57,11 @@ public class ChunkManager : MonoBehaviour
         while (player.position.x + spawnDistance > nextSpawnPositionX)
         {
             SpawnChunk();
+        }
+
+        foreach (HazardChunk chunk in hazardChunks)
+        {
+            chunk.RecordLastChunkType(lastChunkType);
         }
     }
 
@@ -94,58 +93,66 @@ public class ChunkManager : MonoBehaviour
 
     private GameObject ChooseHazardChunk()
     {
-        float hazardProgress = Mathf.Clamp01(player.position.x / hazardProgression);
-        float sideSpikesWeight = Mathf.Lerp(maxHalfSpikeWeight, minHalfSpikeWeight, hazardProgress);
-        float spikeEdgesWeight = Mathf.Lerp(maxEdgeSpikeWeight, minEdgeSpikeWeight, hazardProgress);
-        float movingPlatformShortWeight = Mathf.Lerp(maxMovingPlatformShortWeight, minMovingPlatformShortWeight, hazardProgress);
-        float gapSmallWeight = Mathf.Lerp(maxSmallGapWeight, minSmallGapWeight, hazardProgress);
-        float gapLargeWeight = Mathf.Lerp(maxLargeGapWeight, minLargeGapWeight, hazardProgress);
-        float wallWeight = Mathf.Lerp(maxWallWeight, minWallWeight, hazardProgress);
-        float spikeCeilingWeight = Mathf.Lerp(maxCeilingSpikeWeight, minCeilingSpikeWeight, hazardProgress);
 
-        float totalWeight = sideSpikesWeight + spikeEdgesWeight + movingPlatformShortWeight + gapSmallWeight + gapLargeWeight + wallWeight + spikeCeilingWeight;
+        float totalWeight = 0f;
+        for (int i = 0; i < hazardChunks.Length; i++)
+        {
+            HazardChunk chunk = hazardChunks[i];
 
-        float spawnValue = Random.Range(0, totalWeight);
-        if (spawnValue < sideSpikesWeight)
-        {
-            return ChooseSpikeSide();
+            chunk.ProgressionUpdate(player.position.x);
+
+            if (chunk.IsUnlocked())
+            {
+                chunk.SetSelectRangeStart(totalWeight);
+                chunk.RuleUpdate();
+                totalWeight += chunk.GetWeight();
+            }
         }
-        else if (spawnValue < sideSpikesWeight + spikeEdgesWeight)
+
+        float spawnValue = Random.Range(0f, totalWeight);
+
+        GameObject spawnChunk = null;
+        ChunkType spawnedType = ChunkType.NoneOrSafe;
+        for (int i = 0; i < hazardChunks.Length; i++)
         {
-            return spikeEdges;
+            HazardChunk chunk = hazardChunks[i];
+
+            // Make the chunk selection range inclusive if it is the last chunk in the list
+            bool isTopInclusive = i == hazardChunks.Length - 1;
+
+            if (chunk.IsChunkSelected(spawnValue, isTopInclusive))
+            {
+                spawnChunk = chunk.GetChunk();
+                spawnedType = chunk.GetChunkType();
+                break;
+            }
         }
-        else if (spawnValue < sideSpikesWeight + spikeEdgesWeight + movingPlatformShortWeight)
+
+        if (spawnChunk != null)
         {
-            return movingPlatformShort;
-        }
-        else if (spawnValue < sideSpikesWeight + spikeEdgesWeight + movingPlatformShortWeight + gapSmallWeight)
-        {
-            return gapSmall;
-        }
-        else if (spawnValue < sideSpikesWeight + spikeEdgesWeight + movingPlatformShortWeight + gapSmallWeight + gapLargeWeight)
-        {
-            return gapLarge;
-        }
-        else if (spawnValue < sideSpikesWeight + spikeEdgesWeight + movingPlatformShortWeight + gapSmallWeight + gapLargeWeight + wallWeight)
-        {
-            return wall;
+            lastChunkType = spawnedType;
+            return spawnChunk;
         }
         else
         {
-            return spikeCeiling;
+            // DEBUG
+            UnityEngine.Debug.LogWarning($"No spawn chunk was selected. TotalWeight = {totalWeight}; SpawnValue = {spawnValue}");
+            lastChunkType = ChunkType.NoneOrSafe;
+            return baseChunk;
         }
     }
 
-    private GameObject ChooseSpikeSide()
-    {
-        int sideSelect = Random.Range(0, 2);
-        if (sideSelect == 0)
-        {
-            return spikeHalfLeft;
-        }
-        else
-        {
-            return spikeHalfRight;
-        }
-    }
+    // TODO: Move function to side spike chunk object when created
+    //private GameObject ChooseSpikeSide()
+    //{
+    //    int sideSelect = Random.Range(0, 2);
+    //    if (sideSelect == 0)
+    //    {
+    //        return spikeHalfLeftChunk;
+    //    }
+    //    else
+    //    {
+    //        return spikeHalfRightChunk;
+    //    }
+    //}
 }
