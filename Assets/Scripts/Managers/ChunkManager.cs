@@ -18,15 +18,13 @@ public class ChunkManager : MonoBehaviour
     public float maxSafeChance = 0.5f;
 
     [Header("Hazard Chunks")]
-    // TODO: Combine spikeHalfRight and spikeHalfLeft into spikeHalf and as part of GetChunk, randomly select a half
-    [SerializeField] private HazardChunk spikeHalfRight;
-    [SerializeField] private HazardChunk spikeHalfLeft;
-    [SerializeField] private HazardChunk spikeEdges;
-    [SerializeField] private HazardChunk movingPlatformShort;
-    [SerializeField] private HazardChunk gapSmall;
-    [SerializeField] private HazardChunk gapLarge;
-    [SerializeField] private HazardChunk wall;
-    [SerializeField] private HazardChunk spikeCeiling;
+    [SerializeField] private SpikeSideChunk spikeHalf;
+    [SerializeField] private SpikeEdgeChunk spikeEdges;
+    [SerializeField] private MovingPlatformChunk movingPlatformShort;
+    [SerializeField] private GapSmallChunk gapSmall;
+    [SerializeField] private GapLargeChunk gapLarge;
+    [SerializeField] private WallChunk wall;
+    [SerializeField] private SpikeCeilingChunk spikeCeiling;
     private HazardChunk[] hazardChunks;
     private ChunkType lastChunkType = ChunkType.NoneOrSafe;
 
@@ -37,7 +35,7 @@ public class ChunkManager : MonoBehaviour
 
     void Start()
     {
-        hazardChunks = new HazardChunk[] { spikeHalfRight, spikeHalfLeft, spikeEdges, movingPlatformShort, gapSmall, gapLarge, wall, spikeCeiling };
+        hazardChunks = new HazardChunk[] { spikeHalf, spikeEdges, movingPlatformShort, gapSmall, gapLarge, wall, spikeCeiling };
         foreach (HazardChunk chunk in hazardChunks)
         {
             chunk.Setup();
@@ -141,18 +139,4 @@ public class ChunkManager : MonoBehaviour
             return baseChunk;
         }
     }
-
-    // TODO: Move function to side spike chunk object when created
-    //private GameObject ChooseSpikeSide()
-    //{
-    //    int sideSelect = Random.Range(0, 2);
-    //    if (sideSelect == 0)
-    //    {
-    //        return spikeHalfLeftChunk;
-    //    }
-    //    else
-    //    {
-    //        return spikeHalfRightChunk;
-    //    }
-    //}
 }

@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class HazardChunk
+public abstract class HazardChunk
 {
-    [SerializeField] protected GameObject chunk;
+    [SerializeField] protected GameObject[] chunks;
     [SerializeField] protected ChunkType chunkType;
     [SerializeField] protected float unlockDistance;
     [SerializeField] protected float maxProgression;
@@ -16,14 +16,26 @@ public class HazardChunk
     protected float weight = 0f;
     protected float selectRangeStart = 0f;
 
+    public abstract void RecordLastChunkType(ChunkType lastChunkSpawn);
+    public abstract void RuleUpdate();
+
+    public GameObject GetChunk()
+    {
+        return chunks[UnityEngine.Random.Range(0, chunks.Length)];
+    }
+
+    public ChunkType GetChunkType() { return chunkType; }
+
+    public bool IsUnlocked() { return isUnlocked; }
+
+    public float GetWeight() { return weight; }
+
+    public void SetSelectRangeStart(float prevTotalWeight) { selectRangeStart = prevTotalWeight; }
+
     public void Setup()
     {
         progressionWidth = maxProgression - unlockDistance;
     }
-
-    public GameObject GetChunk() { return chunk; }
-
-    public ChunkType GetChunkType() { return chunkType; }
 
     public void ProgressionUpdate(float playerDistance)
     {
@@ -39,18 +51,6 @@ public class HazardChunk
             weight = 0f;
         }
     }
-
-    public void SetSelectRangeStart(float prevTotalWeight) { selectRangeStart = prevTotalWeight; }
-
-    public bool IsUnlocked() { return isUnlocked; }
-
-    public float GetWeight() { return weight; }
-
-    // TODO: Make abstract?
-    public void RecordLastChunkType(ChunkType lastChunkSpawn) { }
-
-    // TODO: Make abstract?
-    public void RuleUpdate() { }
 
     public bool IsChunkSelected(float selectValue, bool rangeTopInclusive = false)
     {

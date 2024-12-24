@@ -1605,57 +1605,58 @@ MonoBehaviour:
   safeProgression: 1000
   minSafeChance: 0.05
   maxSafeChance: 0.5
-  spikeHalfRight:
-    chunk: {fileID: 1832244546576180856, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
-    chunkType: 1
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
-  spikeHalfLeft:
-    chunk: {fileID: 3573682836918048758, guid: 5e5bfc68184f58343a613ec58f075a88, type: 3}
+  spikeHalf:
+    chunks:
+    - {fileID: 3573682836918048758, guid: 5e5bfc68184f58343a613ec58f075a88, type: 3}
+    - {fileID: 1832244546576180856, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
     chunkType: 1
     unlockDistance: 0
     maxProgression: 1500
     minWeight: 0.3
     maxWeight: 0.7
   spikeEdges:
-    chunk: {fileID: 1832244546576180856, guid: 0a9b4a80799d0074a923130cc2557a61, type: 3}
+    chunks:
+    - {fileID: 1832244546576180856, guid: 0a9b4a80799d0074a923130cc2557a61, type: 3}
     chunkType: 1
     unlockDistance: 0
     maxProgression: 1500
     minWeight: 0.3
     maxWeight: 0.7
   movingPlatformShort:
-    chunk: {fileID: 8193975902164587032, guid: 6abb3847c060ec94fa078af414601814, type: 3}
+    chunks:
+    - {fileID: 8193975902164587032, guid: 6abb3847c060ec94fa078af414601814, type: 3}
     chunkType: 2
     unlockDistance: 0
     maxProgression: 1500
     minWeight: 0.3
     maxWeight: 0.7
   gapSmall:
-    chunk: {fileID: 2746001188014870729, guid: b3b4799e0eb18964faa8860fab61c830, type: 3}
+    chunks:
+    - {fileID: 2746001188014870729, guid: b3b4799e0eb18964faa8860fab61c830, type: 3}
     chunkType: 3
     unlockDistance: 0
     maxProgression: 1500
     minWeight: 0.3
     maxWeight: 0.7
   gapLarge:
-    chunk: {fileID: 2746001188014870729, guid: fe4d99758b9865946b3015126acc677d, type: 3}
+    chunks:
+    - {fileID: 2746001188014870729, guid: fe4d99758b9865946b3015126acc677d, type: 3}
     chunkType: 4
     unlockDistance: 0
     maxProgression: 1500
     minWeight: 0.3
     maxWeight: 0.7
   wall:
-    chunk: {fileID: 2433897062178947417, guid: 21bf562ac1cdfff42ae592c721f2c7d6, type: 3}
+    chunks:
+    - {fileID: 2433897062178947417, guid: 21bf562ac1cdfff42ae592c721f2c7d6, type: 3}
     chunkType: 5
     unlockDistance: 0
     maxProgression: 1500
     minWeight: 0.3
     maxWeight: 0.7
   spikeCeiling:
-    chunk: {fileID: 2178422488429310053, guid: 81100700db2f4a842bcfcdc5c31744c9, type: 3}
+    chunks:
+    - {fileID: 2178422488429310053, guid: 81100700db2f4a842bcfcdc5c31744c9, type: 3}
     chunkType: 6
     unlockDistance: 0
     maxProgression: 1500
