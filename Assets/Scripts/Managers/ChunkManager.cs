@@ -18,14 +18,7 @@ public class ChunkManager : MonoBehaviour
     public float maxSafeChance = 0.5f;
 
     [Header("Hazard Chunks")]
-    [SerializeField] private SpikeSideChunk spikeHalf;
-    [SerializeField] private SpikeEdgeChunk spikeEdges;
-    [SerializeField] private MovingPlatformChunk movingPlatformShort;
-    [SerializeField] private GapSmallChunk gapSmall;
-    [SerializeField] private GapLargeChunk gapLarge;
-    [SerializeField] private WallChunk wall;
-    [SerializeField] private SpikeCeilingChunk spikeCeiling;
-    private HazardChunk[] hazardChunks;
+    [SerializeField] private List<HazardChunk> hazardChunks;
     private ChunkType lastChunkType = ChunkType.NoneOrSafe;
 
     [Header("Player Reference")]
@@ -35,7 +28,6 @@ public class ChunkManager : MonoBehaviour
 
     void Start()
     {
-        hazardChunks = new HazardChunk[] { spikeHalf, spikeEdges, movingPlatformShort, gapSmall, gapLarge, wall, spikeCeiling };
         foreach (HazardChunk chunk in hazardChunks)
         {
             chunk.Setup();
@@ -93,7 +85,7 @@ public class ChunkManager : MonoBehaviour
     {
 
         float totalWeight = 0f;
-        for (int i = 0; i < hazardChunks.Length; i++)
+        for (int i = 0; i < hazardChunks.Count; i++)
         {
             HazardChunk chunk = hazardChunks[i];
 
@@ -111,12 +103,12 @@ public class ChunkManager : MonoBehaviour
 
         GameObject spawnChunk = null;
         ChunkType spawnedType = ChunkType.NoneOrSafe;
-        for (int i = 0; i < hazardChunks.Length; i++)
+        for (int i = 0; i < hazardChunks.Count; i++)
         {
             HazardChunk chunk = hazardChunks[i];
 
             // Make the chunk selection range inclusive if it is the last chunk in the list
-            bool isTopInclusive = i == hazardChunks.Length - 1;
+            bool isTopInclusive = i == hazardChunks.Count - 1;
 
             if (chunk.IsChunkSelected(spawnValue, isTopInclusive))
             {

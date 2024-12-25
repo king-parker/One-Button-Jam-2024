@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public abstract class HazardChunk
+public abstract class HazardChunk : ScriptableObject
 {
     [SerializeField] protected GameObject[] chunks;
     [SerializeField] protected ChunkType chunkType;

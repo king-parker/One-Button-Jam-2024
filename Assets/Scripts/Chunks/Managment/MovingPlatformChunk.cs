@@ -1,6 +1,6 @@
-using System;
+using UnityEngine;
 
-[Serializable]
+[CreateAssetMenu(fileName = "NewMovingPlatformChunk", menuName = "Hazard Chunks/Moving Platform Chunk", order = 2)]
 public class MovingPlatformChunk : HazardChunk
 {
     public override void RecordLastChunkType(ChunkType lastChunkSpawn)

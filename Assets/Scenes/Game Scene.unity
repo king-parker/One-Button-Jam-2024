@@ -1605,63 +1605,21 @@ MonoBehaviour:
   safeProgression: 1000
   minSafeChance: 0.05
   maxSafeChance: 0.5
-  spikeHalf:
-    chunks:
-    - {fileID: 3573682836918048758, guid: 5e5bfc68184f58343a613ec58f075a88, type: 3}
-    - {fileID: 1832244546576180856, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
-    chunkType: 1
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
-  spikeEdges:
-    chunks:
-    - {fileID: 1832244546576180856, guid: 0a9b4a80799d0074a923130cc2557a61, type: 3}
-    chunkType: 1
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
-  movingPlatformShort:
-    chunks:
-    - {fileID: 8193975902164587032, guid: 6abb3847c060ec94fa078af414601814, type: 3}
-    chunkType: 2
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
-  gapSmall:
-    chunks:
-    - {fileID: 2746001188014870729, guid: b3b4799e0eb18964faa8860fab61c830, type: 3}
-    chunkType: 3
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
-  gapLarge:
-    chunks:
-    - {fileID: 2746001188014870729, guid: fe4d99758b9865946b3015126acc677d, type: 3}
-    chunkType: 4
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
-  wall:
-    chunks:
-    - {fileID: 2433897062178947417, guid: 21bf562ac1cdfff42ae592c721f2c7d6, type: 3}
-    chunkType: 5
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
-  spikeCeiling:
-    chunks:
-    - {fileID: 2178422488429310053, guid: 81100700db2f4a842bcfcdc5c31744c9, type: 3}
-    chunkType: 6
-    unlockDistance: 0
-    maxProgression: 1500
-    minWeight: 0.3
-    maxWeight: 0.7
+  spikeHalf: {fileID: 0}
+  spikeEdges: {fileID: 0}
+  movingPlatformShort: {fileID: 0}
+  gapSmall: {fileID: 0}
+  gapLarge: {fileID: 0}
+  wall: {fileID: 0}
+  spikeCeiling: {fileID: 0}
+  hazardChunks:
+  - {fileID: 11400000, guid: c5bf65a4a204c324a9ef4cf72a893516, type: 2}
+  - {fileID: 11400000, guid: 4681ec1dfb9bfd5439db28b747fbe34f, type: 2}
+  - {fileID: 11400000, guid: 464cc25c62b312244bcd2a1ae7975b27, type: 2}
+  - {fileID: 11400000, guid: 1480e91260df40d40b4c6288fd55ef69, type: 2}
+  - {fileID: 11400000, guid: 413b2045de84f0e4c922eec9fd2b1caa, type: 2}
+  - {fileID: 11400000, guid: 4977dbd6635ceed43b4106b17d14210d, type: 2}
+  - {fileID: 11400000, guid: 1bd714cfaea4c7341935f061a23dcf10, type: 2}
   player: {fileID: 1731834492}
 --- !u!1001 &1990765892
 PrefabInstance:

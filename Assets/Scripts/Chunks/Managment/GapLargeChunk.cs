@@ -1,6 +1,6 @@
-using System;
+using UnityEngine;
 
-[Serializable]
+[CreateAssetMenu(fileName = "NewGapLargeChunk", menuName = "Hazard Chunks/Gap Large Chunk", order = 4)]
 public class GapLargeChunk : HazardChunk
 {
     public override void RecordLastChunkType(ChunkType lastChunkSpawn)

@@ -1,6 +1,6 @@
-using System;
+using UnityEngine;
 
-[Serializable]
+[CreateAssetMenu(fileName = "NewWallChunk", menuName = "Hazard Chunks/Wall Chunk", order = 5)]
 public class WallChunk : HazardChunk
 {
     public override void RecordLastChunkType(ChunkType lastChunkSpawn)

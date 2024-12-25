@@ -1,6 +1,6 @@
-using System;
+using UnityEngine;
 
-[Serializable]
+[CreateAssetMenu(fileName = "NewSpikeSideChunk", menuName = "Hazard Chunks/Spike Side Chunk", order = 0)]
 public class SpikeSideChunk : HazardChunk
 {
     public override void RecordLastChunkType(ChunkType lastChunkSpawn)
