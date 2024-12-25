@@ -1597,19 +1597,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f010aeeb6d5f6464c9e9f3e0908d85a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseChunk: {fileID: 6218714669655649827, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
-  spikeHalfRight: {fileID: 1832244546576180856, guid: 2167632a8fae9294a894702ce0203f5f, type: 3}
-  spikeHalfLeft: {fileID: 3573682836918048758, guid: 5e5bfc68184f58343a613ec58f075a88, type: 3}
   chunkWidth: 10
   spawnDistance: 40
   chunkFloorY: -4
   startSpawnPosition: 30
-  maxProgression: 1000
-  hazardProgression: 1500
+  baseChunk: {fileID: 6218714669655649827, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
+  safeProgression: 1000
   minSafeChance: 0.05
   maxSafeChance: 0.5
-  minHalfSpikeChance: 0.3
-  maxHalfSpikeChance: 0.7
+  spikeHalf: {fileID: 0}
+  spikeEdges: {fileID: 0}
+  movingPlatformShort: {fileID: 0}
+  gapSmall: {fileID: 0}
+  gapLarge: {fileID: 0}
+  wall: {fileID: 0}
+  spikeCeiling: {fileID: 0}
+  hazardChunks:
+  - {fileID: 11400000, guid: c5bf65a4a204c324a9ef4cf72a893516, type: 2}
+  - {fileID: 11400000, guid: 4681ec1dfb9bfd5439db28b747fbe34f, type: 2}
+  - {fileID: 11400000, guid: 464cc25c62b312244bcd2a1ae7975b27, type: 2}
+  - {fileID: 11400000, guid: 1480e91260df40d40b4c6288fd55ef69, type: 2}
+  - {fileID: 11400000, guid: 413b2045de84f0e4c922eec9fd2b1caa, type: 2}
+  - {fileID: 11400000, guid: 4977dbd6635ceed43b4106b17d14210d, type: 2}
+  - {fileID: 11400000, guid: 1bd714cfaea4c7341935f061a23dcf10, type: 2}
   player: {fileID: 1731834492}
 --- !u!1001 &1990765892
 PrefabInstance:

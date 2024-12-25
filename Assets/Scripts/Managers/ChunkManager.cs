@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
-    [Header("Chunk Prefabs")]
-    public GameObject baseChunk;
-    public GameObject spikeHalfRight;
-    public GameObject spikeHalfLeft;
-
     [Header("Basic Chunk Settings")]
     public float chunkWidth = 10f;
     public float spawnDistance = 40f;
@@ -16,13 +11,15 @@ public class ChunkManager : MonoBehaviour
     // Spawn doesn't start at -10 so there a base amount of base blocks with no hazards
     public float startSpawnPosition = 20f;
 
-    [Header("Progression Settings")]
-    public float maxProgression = 1000f;
-    public float hazardProgression = 1500f;
+    [Header("Safe Chunk Settings")]
+    public GameObject baseChunk;
+    public float safeProgression = 1000f;
     public float minSafeChance = 0.05f;
     public float maxSafeChance = 0.5f;
-    public float minHalfSpikeChance = 0.3f;
-    public float maxHalfSpikeChance = 0.7f;
+
+    [Header("Hazard Chunks")]
+    [SerializeField] private List<HazardChunk> hazardChunks;
+    private ChunkType lastChunkType = ChunkType.NoneOrSafe;
 
     [Header("Player Reference")]
     public Transform player;
@@ -31,6 +28,11 @@ public class ChunkManager : MonoBehaviour
 
     void Start()
     {
+        foreach (HazardChunk chunk in hazardChunks)
+        {
+            chunk.Setup();
+        }
+
         nextSpawnPositionX = startSpawnPosition;
         ManageChunks();
     }
@@ -46,6 +48,11 @@ public class ChunkManager : MonoBehaviour
         {
             SpawnChunk();
         }
+
+        foreach (HazardChunk chunk in hazardChunks)
+        {
+            chunk.RecordLastChunkType(lastChunkType);
+        }
     }
 
     private void SpawnChunk()
@@ -59,7 +66,7 @@ public class ChunkManager : MonoBehaviour
 
     private GameObject ChooseChunkType()
     {
-        float progress = Mathf.Clamp01(player.position.x / maxProgression);
+        float progress = Mathf.Clamp01(player.position.x / safeProgression);
 
         float safeChance = Mathf.Lerp(maxSafeChance, minSafeChance, progress);
         bool isSafeChunk = Random.value < safeChance;
@@ -76,30 +83,52 @@ public class ChunkManager : MonoBehaviour
 
     private GameObject ChooseHazardChunk()
     {
-        float hazardProgress = Mathf.Clamp01(player.position.x / hazardProgression);
-        float sideSpikesChance = Mathf.Lerp(maxHalfSpikeChance, minHalfSpikeChance, hazardProgress);
 
-        float spawnValue = Random.value;
-        if (spawnValue < sideSpikesChance)
+        float totalWeight = 0f;
+        for (int i = 0; i < hazardChunks.Count; i++)
         {
-            return ChooseSpikeSide();
+            HazardChunk chunk = hazardChunks[i];
+
+            chunk.ProgressionUpdate(player.position.x);
+
+            if (chunk.IsUnlocked())
+            {
+                chunk.SetSelectRangeStart(totalWeight);
+                chunk.RuleUpdate();
+                totalWeight += chunk.GetWeight();
+            }
+        }
+
+        float spawnValue = Random.Range(0f, totalWeight);
+
+        GameObject spawnChunk = null;
+        ChunkType spawnedType = ChunkType.NoneOrSafe;
+        for (int i = 0; i < hazardChunks.Count; i++)
+        {
+            HazardChunk chunk = hazardChunks[i];
+
+            // Make the chunk selection range inclusive if it is the last chunk in the list
+            bool isTopInclusive = i == hazardChunks.Count - 1;
+
+            if (chunk.IsChunkSelected(spawnValue, isTopInclusive))
+            {
+                spawnChunk = chunk.GetChunk();
+                spawnedType = chunk.GetChunkType();
+                break;
+            }
+        }
+
+        if (spawnChunk != null)
+        {
+            lastChunkType = spawnedType;
+            return spawnChunk;
         }
         else
         {
-            return ChooseSpikeSide();
-        }
-    }
-
-    private GameObject ChooseSpikeSide()
-    {
-        int sideSelect = Random.Range(0, 2);
-        if (sideSelect == 0)
-        {
-            return spikeHalfLeft;
-        }
-        else
-        {
-            return spikeHalfRight;
+            // DEBUG
+            UnityEngine.Debug.LogWarning($"No spawn chunk was selected. TotalWeight = {totalWeight}; SpawnValue = {spawnValue}");
+            lastChunkType = ChunkType.NoneOrSafe;
+            return baseChunk;
         }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8016839391604200123}
   - component: {fileID: 8433236610936294478}
   m_Layer: 8
-  m_Name: LargeGap
+  m_Name: GapLarge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
