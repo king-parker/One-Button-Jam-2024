@@ -112,11 +112,11 @@ public class PlayerController : MonoBehaviour, IPlayer
                 {
                     movedLastUpdate = true;
                 }
-                else if (checkSpeed <= stopMovingTolerance && !movedLastUpdate)
+                else if (checkSpeed <= stopMovingTolerance && !movedLastUpdate && IsGrounded())
                 {
                     // Jump completed
                     PlayerData.IncrementPlayerJumps();
-                    PlayerData.SetPlayerDistance(transform.position.x);
+                    PlayerData.UpdatePlayerDistance(transform.position.x);
                     PlayerData.AddSelectionTime(deltaSelectionTime);
                     OnJumpCompleted?.Invoke();
                     NextState();
