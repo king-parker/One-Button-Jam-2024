@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour, IPlayer
     public PowerSelector powerSelector;
     public TimeTracker timeTracker;
     public Rigidbody2D rb;
-    public Collider2D bodyCollider;
     public PhysicsMaterial2D defaultMaterial;
     public PhysicsMaterial2D highFrictionMaterial;
 
@@ -87,7 +86,8 @@ public class PlayerController : MonoBehaviour, IPlayer
             angleSelector.StartIndicator();
         }
 
-        distanceToGround = bodyCollider.bounds.extents.y;
+        BoxCollider2D bodyCollider = GetComponent<BoxCollider2D>();
+        distanceToGround = bodyCollider.bounds.extents.y + bodyCollider.edgeRadius;
         groundCheckLayerMask = LayerMask.GetMask(Layers.WorldName);
         defaultGravity = rb.gravityScale;
     }
@@ -286,8 +286,8 @@ public class PlayerController : MonoBehaviour, IPlayer
     {
         float playerHalfWidth = distanceToGround;
         Vector3 midPos = transform.position;
-        Vector3 leftPos = new Vector3(midPos.x - playerHalfWidth, midPos.y);
-        Vector3 rightPos = new Vector3(midPos.x + playerHalfWidth, midPos.y);
+        Vector3 leftPos = new (midPos.x - playerHalfWidth, midPos.y);
+        Vector3 rightPos = new (midPos.x + playerHalfWidth, midPos.y);
 
         bool checkLeft = Physics2D.Raycast(leftPos, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
         bool checkMid = Physics2D.Raycast(midPos, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
