@@ -53,7 +53,7 @@ public class ScoreManager : MonoBehaviour
     private void UpdateScore()
     {
         float timeEfficiencyFactor = CalcTimeFactor(PlayerData.DeltaSelectionTime);
-        currentScore = Mathf.Max(minScoreAddition, ((PlayerData.PlayerDistance * distanceWeight * timeEfficiencyFactor) - jumpPenaltyWeight));
+        currentScore += Mathf.Max(minScoreAddition, ((PlayerData.DeltaPlayerDistance * distanceWeight * timeEfficiencyFactor) - jumpPenaltyWeight));
         SetScoreText();
     }
 

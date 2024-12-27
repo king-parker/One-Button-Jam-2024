@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour, IPlayer
     public PowerSelector powerSelector;
     public TimeTracker timeTracker;
     public Rigidbody2D rb;
-    public Collider2D bodyCollider;
     public PhysicsMaterial2D defaultMaterial;
     public PhysicsMaterial2D highFrictionMaterial;
 
@@ -28,6 +27,8 @@ public class PlayerController : MonoBehaviour, IPlayer
     private float groundedRaycastOffset = 0.3f;
     private bool movedLastUpdate = false;
     private bool wasGrounded = true;
+    private bool jumpCompleted = true;
+    private float groundHeight = 0f;
     private bool allowGroundCheck = false;
     private int groundCheckLayerMask = 0;
     private float peakJumpHeight = 0f;
@@ -87,9 +88,11 @@ public class PlayerController : MonoBehaviour, IPlayer
             angleSelector.StartIndicator();
         }
 
-        distanceToGround = bodyCollider.bounds.extents.y;
+        BoxCollider2D bodyCollider = GetComponent<BoxCollider2D>();
+        distanceToGround = bodyCollider.bounds.extents.y + bodyCollider.edgeRadius;
         groundCheckLayerMask = LayerMask.GetMask(Layers.WorldName);
         defaultGravity = rb.gravityScale;
+        groundHeight = transform.position.y;
     }
 
     void FixedUpdate()
@@ -114,11 +117,20 @@ public class PlayerController : MonoBehaviour, IPlayer
                 }
                 else if (checkSpeed <= stopMovingTolerance && !movedLastUpdate)
                 {
-                    // Jump completed
-                    PlayerData.IncrementPlayerJumps();
-                    PlayerData.SetPlayerDistance(transform.position.x);
-                    PlayerData.AddSelectionTime(deltaSelectionTime);
-                    OnJumpCompleted?.Invoke();
+                    // Stay in launch state if below ground
+                    if (transform.position.y < groundHeight) { break; }
+
+                    if (IsGrounded())
+                    {
+                        // Jump completed
+                        PlayerData.IncrementPlayerJumps();
+                        PlayerData.UpdatePlayerDistance(transform.position.x);
+                        PlayerData.AddSelectionTime(deltaSelectionTime);
+                        OnJumpCompleted?.Invoke();
+                        jumpCompleted = true;
+                    }
+
+                    // Switch to angle select
                     NextState();
                 }
                 else
@@ -222,7 +234,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 break;
             case PlayerState.AngleSelect:
                 // Start timer for decision time stat
-                timeTracker.RestartTime();
+                if (jumpCompleted) { timeTracker.RestartTime(); }
 
                 angleSelector.StartIndicator();
 
@@ -237,7 +249,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 break;
             case PlayerState.Jumping:
                 // Record decision time to report
-                deltaSelectionTime = timeTracker.GetElapsedTime();
+                if (jumpCompleted) { deltaSelectionTime = timeTracker.GetElapsedTime(); }
 
                 // Make sure the indicators are hidden
                 angleSelector.HideIndicator();
@@ -250,6 +262,7 @@ public class PlayerController : MonoBehaviour, IPlayer
                 rb.gravityScale = defaultGravity;
 
                 // Set flags that are checked durring launch state
+                jumpCompleted = false;
                 movedLastUpdate = true;
                 wasGrounded = false;
                 allowGroundCheck = false;
@@ -286,8 +299,8 @@ public class PlayerController : MonoBehaviour, IPlayer
     {
         float playerHalfWidth = distanceToGround;
         Vector3 midPos = transform.position;
-        Vector3 leftPos = new Vector3(midPos.x - playerHalfWidth, midPos.y);
-        Vector3 rightPos = new Vector3(midPos.x + playerHalfWidth, midPos.y);
+        Vector3 leftPos = new (midPos.x - playerHalfWidth, midPos.y);
+        Vector3 rightPos = new (midPos.x + playerHalfWidth, midPos.y);
 
         bool checkLeft = Physics2D.Raycast(leftPos, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
         bool checkMid = Physics2D.Raycast(midPos, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
