@@ -284,7 +284,16 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     public bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
+        float playerHalfWidth = distanceToGround;
+        Vector3 midPos = transform.position;
+        Vector3 leftPos = new Vector3(midPos.x - playerHalfWidth, midPos.y);
+        Vector3 rightPos = new Vector3(midPos.x + playerHalfWidth, midPos.y);
+
+        bool checkLeft = Physics2D.Raycast(leftPos, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
+        bool checkMid = Physics2D.Raycast(midPos, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
+        bool checkRight = Physics2D.Raycast(rightPos, Vector2.down, distanceToGround + groundedRaycastOffset, groundCheckLayerMask);
+
+        return (checkLeft || checkMid || checkRight);
     }
 
     private void GroundCheckTimerFinished()
