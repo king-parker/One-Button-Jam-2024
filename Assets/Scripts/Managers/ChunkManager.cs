@@ -5,8 +5,8 @@ using UnityEngine;
 public class ChunkManager : MonoBehaviour
 {
     [Header("Basic Chunk Settings")]
-    public float chunkWidth = 10f;
     public float spawnDistance = 40f;
+    public float baseChunkWidth = 10f;
     public float chunkFloorY = -4;
     // Spawn doesn't start at -10 so there a base amount of base blocks with no hazards
     public float startSpawnPosition = 20f;
@@ -25,6 +25,7 @@ public class ChunkManager : MonoBehaviour
     public Transform player;
 
     private float nextSpawnPositionX;
+    private float currentChunkWidth;
 
     void Start()
     {
@@ -61,7 +62,7 @@ public class ChunkManager : MonoBehaviour
 
         GameObject newChunk = Instantiate(chunkPrefab, new Vector3(nextSpawnPositionX, chunkFloorY, 0), Quaternion.identity, this.transform);
 
-        nextSpawnPositionX += chunkWidth;
+        nextSpawnPositionX += currentChunkWidth;
     }
 
     private GameObject ChooseChunkType()
@@ -73,6 +74,8 @@ public class ChunkManager : MonoBehaviour
 
         if (isSafeChunk)
         {
+            // TODO: Update base chunk width selection
+            currentChunkWidth = baseChunkWidth;
             return baseChunk;
         }
         else
@@ -114,6 +117,7 @@ public class ChunkManager : MonoBehaviour
             {
                 spawnChunk = chunk.GetChunk();
                 spawnedType = chunk.GetChunkType();
+                currentChunkWidth = chunk.GetChunkWidth();
                 break;
             }
         }
@@ -128,6 +132,7 @@ public class ChunkManager : MonoBehaviour
             // DEBUG
             UnityEngine.Debug.LogWarning($"No spawn chunk was selected. TotalWeight = {totalWeight}; SpawnValue = {spawnValue}");
             lastChunkType = ChunkType.NoneOrSafe;
+            currentChunkWidth = baseChunkWidth;
             return baseChunk;
         }
     }

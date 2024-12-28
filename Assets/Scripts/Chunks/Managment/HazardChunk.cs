@@ -6,6 +6,7 @@ public abstract class HazardChunk : ScriptableObject
 {
     [SerializeField] protected GameObject[] chunks;
     [SerializeField] protected ChunkType chunkType;
+    [SerializeField] protected float chunkWidth;
     [SerializeField] protected float unlockDistance;
     [SerializeField] protected float maxProgression;
     [SerializeField] protected float minWeight;
@@ -29,6 +30,8 @@ public abstract class HazardChunk : ScriptableObject
     public bool IsUnlocked() { return isUnlocked; }
 
     public float GetWeight() { return weight; }
+
+    public float GetChunkWidth() { return chunkWidth; }
 
     public void SetSelectRangeStart(float prevTotalWeight) { selectRangeStart = prevTotalWeight; }
 

@@ -15,6 +15,7 @@ MonoBehaviour:
   chunks:
   - {fileID: 2178422488429310053, guid: 81100700db2f4a842bcfcdc5c31744c9, type: 3}
   chunkType: 0
+  chunkWidth: 10
   unlockDistance: 0
   maxProgression: 1500
   minWeight: 0.3
