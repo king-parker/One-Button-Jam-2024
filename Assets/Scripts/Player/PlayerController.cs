@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IPlayer
 {
+    private const float DOT_PARALLEL_TOLERANCE = 0.7f;
     public PlayerControls controls;
 
     [Header("References")]
@@ -31,16 +32,19 @@ public class PlayerController : MonoBehaviour, IPlayer
     private float groundHeight = 0f;
     private bool allowGroundCheck = false;
     private int groundCheckLayerMask = 0;
-    private float peakJumpHeight = 0f;
     private float deltaSelectionTime = 0f;
+    private bool collidedWorldFloor = false;
+    private bool collidedWorldWallRight = false;
+    private bool collidedWorldWallLeft = false;
+    private bool collidedWorldCeiling = false;
     private bool isOnPlatform = false;
     private MovingPlatform movingPlatform;
     private float platformSpeedAdjust = 0f;
     private float defaultGravity;
 
     [Header("SFX Properties")]
-    [SerializeField]private float slidingVolumeSpeed = 15f;
-    [SerializeField] private float landingVolumeHeight = 15f;
+    [SerializeField] private float slidingVolumeSpeed = 15f;
+    [SerializeField] private float landingVolumeSpeed = 25f;
     private AudioSource slidingSFXSource;
 
     [Header("Other Properties")]
@@ -138,7 +142,6 @@ public class PlayerController : MonoBehaviour, IPlayer
                     movedLastUpdate = false;
                 }
 
-                if (transform.position.y > peakJumpHeight) { peakJumpHeight = transform.position.y; }
                 break;
         }
 
@@ -165,10 +168,13 @@ public class PlayerController : MonoBehaviour, IPlayer
         // Outside of jumping case so sound is played when in disabled state
         if (allowGroundCheck && !wasGrounded && IsGrounded())
         {
-            // Create landing adio
             wasGrounded = true;
-            float landingVolume = Mathf.Lerp(0.2f, 1f, peakJumpHeight / landingVolumeHeight);
-            SFXManager.instance.PlaySFXClip(landingAudio, this.transform, landingVolume);
+
+            // Create landing adio
+            if (collidedWorldFloor)
+            {
+                FloorCollision();
+            }
 
             // Create sliding audio
             if (rb.velocity.magnitude > 0 && slidingSFXSource == null)
@@ -176,6 +182,19 @@ public class PlayerController : MonoBehaviour, IPlayer
                 slidingSFXSource = SFXManager.instance.CreateContinuousSFXClip(slidingAudio, this.gameObject, 1f);
                 slidingSFXSource.Play();
             }
+        }
+
+        if (collidedWorldWallRight)
+        {
+            WallCollision();
+        }
+        if (collidedWorldWallLeft)
+        {
+            WallCollision(false);
+        }
+        if (collidedWorldCeiling)
+        {
+            CeilingCollision();
         }
     }
 
@@ -269,7 +288,6 @@ public class PlayerController : MonoBehaviour, IPlayer
                 Invoke(nameof(GroundCheckTimerFinished), groundCheckDelay);
 
                 // Manage audio for the launch phase
-                peakJumpHeight = 0;
                 float launchVolume = Mathf.Lerp(0f, .8f, power / powerSelector.maxPower);
                 SFXManager.instance.PlaySFXClip(jumpAudio, this.transform, launchVolume);
 
@@ -314,6 +332,38 @@ public class PlayerController : MonoBehaviour, IPlayer
         allowGroundCheck = true;
     }
 
+    private void FloorCollision()
+    {
+        WorldCollision();
+        collidedWorldFloor = false;
+    }
+
+    private void WallCollision(bool rightCollision = true)
+    {
+        WorldCollision();
+
+        if (rightCollision)
+        {
+            collidedWorldWallRight = false;
+        }
+        else
+        {
+            collidedWorldWallLeft = false;
+        }
+    }
+
+    private void CeilingCollision()
+    {
+        WorldCollision();
+        collidedWorldCeiling = false;
+    }
+
+    private void WorldCollision()
+    {
+        float landingVolume = rb.velocity.magnitude / landingVolumeSpeed;
+        SFXManager.instance.PlaySFXClip(landingAudio, this.transform, landingVolume);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(Tags.MovingPlatform))
@@ -324,10 +374,41 @@ public class PlayerController : MonoBehaviour, IPlayer
 
             foreach (var contact in contacts)
             {
-                if (Vector2.Dot(contact.normal, Vector2.up) > 0.7)
+                if (Vector2.Dot(contact.normal, Vector2.up) > DOT_PARALLEL_TOLERANCE)
                 {
                     isOnPlatform = true;
                     movingPlatform = collision.gameObject.GetComponent<MovingPlatform>();
+                    break;
+                }
+            }
+        }
+
+        if (collision.gameObject.layer == Layers.World)
+        {
+            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contacts);
+
+            foreach (var contact in contacts)
+            {
+                Vector2 normal = contact.normal;
+                if (Vector2.Dot(normal, Vector2.up) > DOT_PARALLEL_TOLERANCE)
+                {
+                    collidedWorldFloor = true;
+                    break;
+                }
+                if (Vector2.Dot(normal, Vector2.left) > DOT_PARALLEL_TOLERANCE)
+                {
+                    collidedWorldWallRight = true;
+                    break;
+                }
+                if (Vector2.Dot(normal, Vector2.down) > DOT_PARALLEL_TOLERANCE)
+                {
+                    collidedWorldWallLeft = true;
+                    break;
+                }
+                if (Vector2.Dot(normal, Vector2.right) > DOT_PARALLEL_TOLERANCE)
+                {
+                    collidedWorldCeiling = true;
                     break;
                 }
             }
