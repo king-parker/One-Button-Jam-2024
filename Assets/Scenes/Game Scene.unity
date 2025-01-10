@@ -1301,14 +1301,13 @@ MonoBehaviour:
   powerSelector: {fileID: 732575489}
   timeTracker: {fileID: 605381164}
   rb: {fileID: 1731834491}
-  bodyCollider: {fileID: 1731834490}
   defaultMaterial: {fileID: 6200000, guid: be592a67e8ef7a6489bb836fb7997be2, type: 2}
   highFrictionMaterial: {fileID: 6200000, guid: ba6e6c3eb405dd3468fb00c877d7323b, type: 2}
   jumpAudio: {fileID: 8300000, guid: ff3fed4fdd4ff2f409448a235e9363fe, type: 3}
   landingAudio: {fileID: 8300000, guid: 7e393d55e74c6814ca9b773e748190f9, type: 3}
   slidingAudio: {fileID: 8300000, guid: 4a5015eb65f9c434aa1cd81f9aa24f96, type: 3}
   slidingVolumeSpeed: 15
-  landingVolumeHeight: 5
+  landingVolumeSpeed: 25
   groundCheckDelay: 0.15
   stopMovingTolerance: 0.01
 --- !u!61 &1731834490
@@ -1597,21 +1596,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f010aeeb6d5f6464c9e9f3e0908d85a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkWidth: 10
   spawnDistance: 40
+  baseChunkWidth: 10
   chunkFloorY: -4
   startSpawnPosition: 30
   baseChunk: {fileID: 6218714669655649827, guid: 01edf0b8bbdb0eb4aa0dd749d96c7c66, type: 3}
   safeProgression: 1000
   minSafeChance: 0.05
   maxSafeChance: 0.5
-  spikeHalf: {fileID: 0}
-  spikeEdges: {fileID: 0}
-  movingPlatformShort: {fileID: 0}
-  gapSmall: {fileID: 0}
-  gapLarge: {fileID: 0}
-  wall: {fileID: 0}
-  spikeCeiling: {fileID: 0}
   hazardChunks:
   - {fileID: 11400000, guid: c5bf65a4a204c324a9ef4cf72a893516, type: 2}
   - {fileID: 11400000, guid: 4681ec1dfb9bfd5439db28b747fbe34f, type: 2}
