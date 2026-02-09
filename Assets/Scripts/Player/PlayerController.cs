@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour, IPlayer
     public Rigidbody2D rb;
     public PhysicsMaterial2D defaultMaterial;
     public PhysicsMaterial2D highFrictionMaterial;
+    public ParticleSystem collisionParticles;
 
     [Header("SFX Audio")]
     public AudioClip jumpAudio;
@@ -57,6 +58,14 @@ public class PlayerController : MonoBehaviour, IPlayer
         AngleSelect,
         PowerSelect,
         Jumping
+    }
+
+    private enum Side
+    {
+        Up,
+        Right,
+        Down,
+        Left
     }
 
     void Awake()
@@ -334,13 +343,13 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     private void FloorCollision()
     {
-        WorldCollision();
+        WorldCollision(Side.Up);
         collidedWorldFloor = false;
     }
 
     private void WallCollision(bool rightCollision = true)
     {
-        WorldCollision();
+        WorldCollision(Side.Right);
 
         if (rightCollision)
         {
@@ -354,14 +363,26 @@ public class PlayerController : MonoBehaviour, IPlayer
 
     private void CeilingCollision()
     {
-        WorldCollision();
+        WorldCollision(Side.Up);
         collidedWorldCeiling = false;
     }
 
-    private void WorldCollision()
+    private void WorldCollision(Side collisionSide)
     {
         float landingVolume = rb.velocity.magnitude / landingVolumeSpeed;
         SFXManager.instance.PlaySFXClip(landingAudio, this.transform, landingVolume);
+
+        SpawnCollisionParticles(collisionSide);
+    }
+
+    private void SpawnCollisionParticles(Side spawnSide)
+    {
+        Vector3 spawnLocation = transform.position;
+        Vector3 rotation = Vector3.zero;
+
+
+
+        Instantiate(collisionParticles, spawnLocation, Quaternion.Euler(rotation));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -422,5 +443,24 @@ public class PlayerController : MonoBehaviour, IPlayer
             isOnPlatform = false;
             movingPlatform = null;
         }
+    }
+}
+
+public class Solution
+{
+    public int[] TwoSum(int[] nums, int target)
+    {
+        for (int i = 0; i < nums.Length; i++)
+        {
+            for (int j = i + 1; j < nums.Length; j++)
+            {
+                if (nums[i] + nums[j] == target)
+                {
+                    return new int[] { i, j };
+                }
+            }
+        }
+
+        return new int[0];
     }
 }
